@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { getTeam } from './team'
+import { classify } from './query'
 import * as csgo from 'commander'
 
 const status = {
@@ -13,7 +13,7 @@ const modifyType = (type: string) => status.type = type
 const handler = (name: string) => {
   status.team = name
   console.log(`querying ${status.type} info of ${status.team}, please wait`)
-  if (status.type === 'battle') getTeam(name)
+  classify(status.type)(name)
 }
 csgo
   .version('0.1.0')
