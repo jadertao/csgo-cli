@@ -1,4 +1,3 @@
-
 import { HLTV } from 'hltv'
 import { TEAM } from './constant'
 
