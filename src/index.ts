@@ -1,26 +1,9 @@
 #! /usr/bin/env node
-
-import { classify } from './query'
 import * as csgo from 'commander'
 
+import { config } from './config'
 
-
-// const handler = (name: string) => {
-//   status.team = name
-//   console.log(`querying ${status.type} info of ${status.team}, please wait`)
-//   classify(status.type)(name)
-// }
-
-
-// csgo
-//   .version('0.1.0')
-
-// csgo
-//   .command('team [name]')
-//   .alias('t')
-//   .description('查询队伍信息')
-//   .option('--content,-c <type>', 'specify query content', modifyType)
-//   .action(handler)
+// TODO: a chain function calling bug to be fixed
 
 const mount = (cli, config) => {
   cli.version(config.version)
@@ -30,9 +13,14 @@ const mount = (cli, config) => {
       .command(cmd.name)
       .alias(cmd.alias)
       .description(cmd.description)
-      .option(...cmd.option)
-    // TODO: add handler
-  })
-}
 
-csgo.parse(process.argv)
+    cmd.option.forEach(o => {
+      cli.option(o[0], o[1])
+    })
+
+    cli.action(cmd.handler)
+  })
+  return cli
+}
+mount(csgo, config).parse(process.argv)
+

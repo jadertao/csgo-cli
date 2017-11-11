@@ -2,14 +2,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var csgo = require("commander");
+var config_1 = require("./config");
 var mount = function (cli, config) {
     cli.version(config.version);
     config.command.forEach(function (cmd) {
-        (_a = cli
+        cli
             .command(cmd.name)
             .alias(cmd.alias)
-            .description(cmd.description)).option.apply(_a, cmd.option);
-        var _a;
+            .description(cmd.description);
+        cmd.option.forEach(function (o) {
+            cli.option(o[0], o[1]);
+        });
+        cli.action(cmd.handler);
     });
+    return cli;
 };
-csgo.parse(process.argv);
+mount(csgo, config_1.config).parse(process.argv);
