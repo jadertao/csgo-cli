@@ -3,24 +3,23 @@ import * as csgo from 'commander'
 
 import { config } from './config'
 
-// TODO: a chain function calling bug to be fixed
-
 const mount = (cli, config) => {
   cli.version(config.version)
 
   config.command.forEach(cmd => {
-    cli
-      .command(cmd.name)
-      .alias(cmd.alias)
+    // CARE: the reture value of cli#command is wired, so take it out
+    let _cli = cli.command(cmd.name)
+
+    _cli.alias(cmd.alias)
       .description(cmd.description)
 
     cmd.option.forEach(o => {
-      cli.option(o[0], o[1])
+      _cli.option(o[0], o[1])
     })
 
-    cli.action(cmd.handler)
+    _cli.action(cmd.handler)
   })
-  return cli
 }
-mount(csgo, config).parse(process.argv)
 
+mount(csgo, config)
+csgo.parse(process.argv)
