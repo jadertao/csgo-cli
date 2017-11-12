@@ -1,4 +1,3 @@
-
 import { getTeamMatch, getTeamOverview, getTeamRanking } from './query'
 
 interface command {
@@ -22,22 +21,22 @@ export const config: config = {
       alias: 't',
       description: '查询队伍信息,每次只能查询一种',
       option: [
-        ['-m --match', 'query recent matches according to team'],
-        ['-o --overview', 'query overview according to team'],
-        ['-r --ranking', 'query current ranking according to team']
+        ['-m --match', 'query recent matches'],
+        ['-o --overview', 'query overview'],
+        ['-r --ranking', 'query current ranking']
       ],
       handler: (name: string, options: any) => {
-        console.log(name)
+        name = name.toLowerCase()
         if (options.match && !options.overview && !options.ranking) {
-          console.log(`querying recent matches of ${name},pleaze wait`)
+          console.log(`querying recent matches of team ${name}...`)
           getTeamMatch(name)
         }
         if (!options.match && options.overview && !options.ranking) {
-          console.log(`querying team overview of ${name},pleaze wait`)
+          console.log(`querying team overview of team ${name}...`)
           getTeamOverview(name)
         }
         if (!options.match && !options.overview && options.ranking) {
-          console.log(`querying current team ranking of ${name},pleaze wait`)
+          console.log(`querying current team ranking of team ${name}...`)
           getTeamRanking(name)
         }
       }
