@@ -20,5 +20,3 @@ export const getTeamRanking = (name: string) => {
   const day = today.getDate()
   HLTV.getTeamRanking({ year: `${year}`, month: `${month}`, day: `${day}` }).then(console.log, handleError)
 }
-
-
