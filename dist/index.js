@@ -9,9 +9,11 @@ var mount = function (cli, config) {
         var _cli = cli.command(cmd.name);
         _cli.alias(cmd.alias)
             .description(cmd.description);
-        cmd.option.forEach(function (o) {
-            _cli.option(o[0], o[1]);
-        });
+        if (cmd.option.length) {
+            cmd.option.forEach(function (o) {
+                _cli.option(o[0], o[1]);
+            });
+        }
         _cli.action(cmd.handler);
     });
 };

@@ -1,7 +1,9 @@
 #! /usr/bin/env node
+import * as fs from 'fs'
 import * as csgo from 'commander'
 
 import { config } from './config'
+
 
 const mount = (cli, config) => {
   cli.version(config.version)
@@ -13,9 +15,11 @@ const mount = (cli, config) => {
     _cli.alias(cmd.alias)
       .description(cmd.description)
 
-    cmd.option.forEach(o => {
-      _cli.option(o[0], o[1])
-    })
+    if (cmd.option.length) {
+      cmd.option.forEach(o => {
+        _cli.option(o[0], o[1])
+      })
+    }
 
     _cli.action(cmd.handler)
   })
