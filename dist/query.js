@@ -14,3 +14,5 @@ exports.getTeamRanking = function (name) {
     var day = today.getDate();
     hltv_1.HLTV.getTeamRanking({ year: "" + year, month: "" + month, day: "" + day }).then(console.log, handleError);
 };
+exports.getMatches = function () { return hltv_1.HLTV.getMatches().then(console.log, handleError); };
+exports.getPlayer = function (name) { return hltv_1.HLTV.getPlayer({ id: constant_1.PLAYER[name] }).then(console.log, handleError); };

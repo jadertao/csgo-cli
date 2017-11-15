@@ -1,5 +1,5 @@
 import { HLTV } from 'hltv'
-import { TEAM } from './constant'
+import { TEAM, PLAYER } from './constant'
 
 // TODO: adjust API according to schema
 
@@ -20,3 +20,7 @@ export const getTeamRanking = (name: string) => {
   const day = today.getDate()
   HLTV.getTeamRanking({ year: `${year}`, month: `${month}`, day: `${day}` }).then(console.log, handleError)
 }
+
+export const getMatches = () => HLTV.getMatches().then(console.log, handleError)
+
+export const getPlayer = (name: string) => HLTV.getPlayer({ id: PLAYER[name] }).then(console.log, handleError)
