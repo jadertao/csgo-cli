@@ -7,7 +7,7 @@ exports.config = {
         {
             name: 'team [name]',
             alias: 't',
-            description: '查询队伍信息,每次只能查询一种',
+            description: 'query team info, one team for one time',
             option: [
                 ['-m --match', 'query recent matches'],
                 ['-o --overview', 'query overview'],
@@ -18,16 +18,34 @@ exports.config = {
                 if (options.match && !options.overview && !options.ranking) {
                     console.log("querying recent matches of team " + name + "...");
                     query_1.getTeamMatch(name);
+                    return;
                 }
                 if (!options.match && options.overview && !options.ranking) {
                     console.log("querying team overview of team " + name + "...");
                     query_1.getTeamOverview(name);
+                    return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
                     console.log("querying current team ranking of team " + name + "...");
                     query_1.getTeamRanking(name);
+                    return;
                 }
+                console.log('no valid input');
             }
+        },
+        {
+            name: 'match',
+            alias: 'm',
+            description: 'query matches schedule',
+            option: [],
+            handler: query_1.getMatches
+        },
+        {
+            name: 'player',
+            alias: 'p',
+            description: 'query player info',
+            option: [],
+            handler: query_1.getPlayer
         }
     ]
 };
