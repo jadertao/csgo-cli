@@ -1,15 +1,15 @@
 #! /usr/bin/env node
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var csgo = require("commander");
-var config_1 = require("./config");
-var mount = function (cli, config) {
+const csgo = require("commander");
+const config_1 = require("./config");
+const mount = (cli, config) => {
     cli.version(config.version);
-    config.command.forEach(function (cmd) {
-        var _cli = cli.command(cmd.name);
+    config.command.forEach(cmd => {
+        let _cli = cli.command(cmd.name);
         _cli.alias(cmd.alias).description(cmd.description);
         if (cmd.option.length) {
-            cmd.option.forEach(function (o) {
+            cmd.option.forEach(o => {
                 _cli.option(o[0], o[1]);
             });
         }

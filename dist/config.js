@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var query_1 = require("./query");
+const query_1 = require("./query");
+const paramCheck = name => {
+    if (!name) {
+        console.log('team name is required');
+        return false;
+    }
+    return true;
+};
 exports.config = {
     version: '0.1.0',
     command: [
@@ -13,24 +20,26 @@ exports.config = {
                 ['-o --overview', 'query overview'],
                 ['-r --ranking', 'query current ranking']
             ],
-            handler: function (name, options) {
+            handler: (name, options) => {
+                if (!paramCheck(name))
+                    return;
                 name = name.toLowerCase();
                 if (options.match && !options.overview && !options.ranking) {
-                    console.log("querying recent matches of team " + name + "...");
+                    console.log(`querying recent matches of team ${name}...`);
                     query_1.getTeamMatch(name);
                     return;
                 }
                 if (!options.match && options.overview && !options.ranking) {
-                    console.log("querying team overview of team " + name + "...");
+                    console.log(`querying team overview of team ${name}...`);
                     query_1.getTeamOverview(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
-                    console.log("querying current team ranking of team " + name + "...");
+                    console.log(`querying current team ranking of team ${name}...`);
                     query_1.getTeamRanking(name);
                     return;
                 }
-                console.log('no valid input');
+                console.log("a valid option is required, see 'csgo team -h'");
             }
         },
         {

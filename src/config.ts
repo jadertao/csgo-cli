@@ -12,7 +12,13 @@ interface config {
   version: string,
   command: Array<command>
 }
-
+const paramCheck = name => {
+  if (!name) {
+    console.log('team name is required')
+    return false
+  }
+  return true
+}
 export const config: config = {
   version: '0.1.0',
   command: [
@@ -26,6 +32,7 @@ export const config: config = {
         ['-r --ranking', 'query current ranking']
       ],
       handler: (name: string, options: any) => {
+        if (!paramCheck(name)) return
         name = name.toLowerCase()
         if (options.match && !options.overview && !options.ranking) {
           console.log(`querying recent matches of team ${name}...`)
@@ -42,7 +49,7 @@ export const config: config = {
           getTeamRanking(name)
           return
         }
-        console.log('no valid input')
+        console.log("a valid option is required, see 'csgo team -h'")
       }
     },
     {
