@@ -21,22 +21,25 @@ exports.config = {
                 ['-r --ranking', 'query current ranking']
             ],
             handler: (name, options) => {
-                if (!paramCheck(name))
-                    return;
-                name = name.toLowerCase();
+                if (name)
+                    name = name.toLowerCase();
                 if (options.match && !options.overview && !options.ranking) {
+                    if (!paramCheck(name))
+                        return;
                     console.log(`querying recent matches of team ${name}...`);
                     query_1.getTeamMatch(name);
                     return;
                 }
                 if (!options.match && options.overview && !options.ranking) {
+                    if (!paramCheck(name))
+                        return;
                     console.log(`querying team overview of team ${name}...`);
                     query_1.getTeamOverview(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
-                    console.log(`querying current team ranking of team ${name}...`);
-                    query_1.getTeamRanking(name);
+                    console.log(`querying current team ranking of all team...`);
+                    query_1.getTeamRanking();
                     return;
                 }
                 console.log("a valid option is required, see 'csgo team -h'");

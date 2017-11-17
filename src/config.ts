@@ -1,5 +1,6 @@
 import { getTeamMatch, getTeamOverview, getTeamRanking, getMatches, getPlayer } from './query'
 
+
 interface command {
   name: string,
   alias: string,
@@ -32,21 +33,22 @@ export const config: config = {
         ['-r --ranking', 'query current ranking']
       ],
       handler: (name: string, options: any) => {
-        if (!paramCheck(name)) return
-        name = name.toLowerCase()
+        if (name) name = name.toLowerCase()
         if (options.match && !options.overview && !options.ranking) {
+          if (!paramCheck(name)) return
           console.log(`querying recent matches of team ${name}...`)
           getTeamMatch(name)
           return
         }
         if (!options.match && options.overview && !options.ranking) {
+          if (!paramCheck(name)) return
           console.log(`querying team overview of team ${name}...`)
           getTeamOverview(name)
           return
         }
         if (!options.match && !options.overview && options.ranking) {
-          console.log(`querying current team ranking of team ${name}...`)
-          getTeamRanking(name)
+          console.log(`querying current team ranking of all team...`)
+          getTeamRanking()
           return
         }
         console.log("a valid option is required, see 'csgo team -h'")
