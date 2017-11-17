@@ -17,13 +17,21 @@ exports.getTeamMatch = (name) => getTeam(name).then(res => {
 }, handleError);
 exports.getTeamOverview = (name) => {
     getTeamStats(name).then(res => {
-        const o_table = new Table();
+        const o_table = new Table({
+            head: ['key', 'value']
+        });
         const p_table = new Table({
             head: ['currentPlayers', 'historicPlayers', 'standinPlayers']
         });
         const { currentLineup, historicPlayers, standins } = res;
         const length = Math.max(currentLineup.length, historicPlayers.length, standins.length);
-        Array.from({ length });
+        Array.from({ length }, (v, i) => i).forEach(n => {
+            let row = [];
+            row[0] = currentLineup[n] ? currentLineup[n].name : '';
+            row[1] = historicPlayers[n] ? historicPlayers[n].name : '';
+            row[2] = standins[n] ? standins[n].name : '';
+            p_table.push(row);
+        });
         const keys = Object.keys(res.overview);
         keys.forEach(k => {
             let item = {};
@@ -31,14 +39,20 @@ exports.getTeamOverview = (name) => {
             o_table.push(item);
         });
         console.log(o_table.toString());
+        console.log(p_table.toString());
     }, handleError);
 };
-exports.getTeamRanking = (name) => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const day = today.getDate();
-    hltv_1.default.getTeamRanking({ year: `${year}`, month: `${month}`, day: `${day}` }).then(console.log, handleError);
+exports.getTeamRanking = () => {
+    hltv_1.default.getTeamRanking().then(res => {
+        const table = new Table({
+            head: ['ranking', 'name', 'points', 'change']
+        });
+        res.forEach(p => {
+            let row = [p.place, p.team.name, p.points, p.change];
+            table.push(row);
+        });
+        console.log(table.toString());
+    }, handleError);
 };
 exports.getMatches = () => hltv_1.default.getMatches().then(console.log, handleError);
 exports.getPlayer = (name) => hltv_1.default.getPlayer({ id: constant_1.PLAYER[name] }).then(console.log, handleError);
