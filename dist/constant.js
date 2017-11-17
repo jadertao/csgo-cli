@@ -509,3 +509,4 @@ exports.PLAYER = {
     zoree: "8576",
     zqks: "7383"
 };
+exports.MONTH = ['janu', 'febr', 'marc', 'apri', 'may', 'june', 'july', 'augu', 'sept', 'octo', 'nove', 'dece'];

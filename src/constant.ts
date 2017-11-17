@@ -509,3 +509,4 @@ export const PLAYER = {
   zqks: "7383"
 }
 
+export const MONTH = ['janu','febr','marc','apri','may','june','july','augu','sept','octo','nove','dece']
