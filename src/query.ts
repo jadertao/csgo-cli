@@ -24,7 +24,7 @@ export const getTeamMatch = (name: string) => getTeam(name).then(res => {
 export const getTeamOverview = (name: string) => {
   getTeamStats(name).then(res => {
     const o_table = new Table({
-      head:['key','value']
+      head: ['key', 'value']
     })
     const p_table = new Table({
       head: ['currentPlayers', 'historicPlayers', 'standinPlayers']
@@ -65,6 +65,33 @@ export const getTeamRanking = () => {
   }, handleError)
 }
 
-export const getMatches = () => HLTV.getMatches().then(console.log, handleError)
+export const getMatches = () => HLTV.getMatches().then(res => {
+  const table = new Table({
+    head: ['stars', 'date', 'team-A', 'team-B', 'format', 'event']
+  })
+  res.forEach(m => {
+    const container = '★ ★ ★ ★ ★ ★ ★ ★ ★ ★'
+    let star_num: number = m.stars
+    let stars: string = container.slice(0, 2 * star_num)
+
+    let date: string = '-'
+    if ('date' in m) {
+      date = m['date']
+      const _date: Date = new Date(date)
+      date = _date.toLocaleString()
+    }
+
+    let team1: string = ''
+    let team2: string = ''
+    if (m.team1) team1 = m.team1.name
+    if (m.team2) team2 = m.team2.name
+
+    let event: string = ''
+    if (m.event) event = m.event.name
+
+    table.push([stars, date, team1, team2, m.format, event])
+  })
+  console.log(table.toString())
+}, handleError)
 
 export const getPlayer = (name: string) => HLTV.getPlayer({ id: PLAYER[name] }).then(console.log, handleError)

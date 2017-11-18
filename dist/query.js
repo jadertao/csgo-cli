@@ -54,5 +54,31 @@ exports.getTeamRanking = () => {
         console.log(table.toString());
     }, handleError);
 };
-exports.getMatches = () => hltv_1.default.getMatches().then(console.log, handleError);
+exports.getMatches = () => hltv_1.default.getMatches().then(res => {
+    const table = new Table({
+        head: ['stars', 'date', 'team-A', 'team-B', 'format', 'event']
+    });
+    res.forEach(m => {
+        const container = '★ ★ ★ ★ ★ ★ ★ ★ ★ ★';
+        let star_num = m.stars;
+        let stars = container.slice(0, 2 * star_num);
+        let date = '-';
+        if ('date' in m) {
+            date = m['date'];
+            const _date = new Date(date);
+            date = _date.toLocaleString();
+        }
+        let team1 = '';
+        let team2 = '';
+        if (m.team1)
+            team1 = m.team1.name;
+        if (m.team2)
+            team2 = m.team2.name;
+        let event = '';
+        if (m.event)
+            event = m.event.name;
+        table.push([stars, date, team1, team2, m.format, event]);
+    });
+    console.log(table.toString());
+}, handleError);
 exports.getPlayer = (name) => hltv_1.default.getPlayer({ id: constant_1.PLAYER[name] }).then(console.log, handleError);
