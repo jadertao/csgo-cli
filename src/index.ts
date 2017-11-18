@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-import * as fs from 'fs'
 import * as csgo from 'commander'
 import { config } from './config'
 
