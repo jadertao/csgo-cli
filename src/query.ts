@@ -5,12 +5,28 @@ import { TEAM, PLAYER, MONTH } from './constant'
 
 // TODO: adjust API according to schema
 
+/**
+ * 
+ * @param err  error
+ */
 const handleError = err => console.log(`${err.name} ${err.errno}`)
 
+/**
+ * 
+ * @param name team name
+ */
 const getTeam = (name: string) => HLTV.getTeam({ id: TEAM[name] })
 
+/**
+ * 
+ * @param name team name
+ */
 const getTeamStats = (name: string) => HLTV.getTeamStats({ id: TEAM[name] })
 
+/**
+ * 
+ * @param name team name
+ */
 export const getTeamMatch = (name: string) => getTeam(name).then(res => {
   const table = new Table({
     head: ['opponent', 'result', 'event']
@@ -21,6 +37,10 @@ export const getTeamMatch = (name: string) => getTeam(name).then(res => {
   console.log(table.toString())
 }, handleError)
 
+/**
+ * 
+ * @param name team name
+ */
 export const getTeamOverview = (name: string) => {
   getTeamStats(name).then(res => {
     const o_table = new Table({
@@ -52,6 +72,9 @@ export const getTeamOverview = (name: string) => {
   }, handleError)
 }
 
+/**
+ * 
+ */
 export const getTeamRanking = () => {
   HLTV.getTeamRanking().then(res => {
     const table = new Table({
@@ -65,6 +88,9 @@ export const getTeamRanking = () => {
   }, handleError)
 }
 
+/**
+ * 
+ */
 export const getMatches = () => HLTV.getMatches().then(res => {
   const table = new Table({
     head: ['stars', 'date', 'team-A', 'team-B', 'format', 'event']
@@ -94,4 +120,8 @@ export const getMatches = () => HLTV.getMatches().then(res => {
   console.log(table.toString())
 }, handleError)
 
+/**
+ * 
+ * @param name player name
+ */
 export const getPlayer = (name: string) => HLTV.getPlayer({ id: PLAYER[name] }).then(console.log, handleError)
