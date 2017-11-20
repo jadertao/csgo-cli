@@ -6,26 +6,28 @@ import { TEAM, PLAYER, MONTH } from './constant'
 // TODO: adjust API according to schema
 
 /**
- * 
+ * used as Promise reject handler
+ * TODO: handle errors properly
  * @param err  error
  */
 const handleError = err => console.log(`${err.name} ${err.errno}`)
 
 /**
- * 
+ * public part of some of the following query functions
  * @param name team name
  */
 const getTeam = (name: string) => HLTV.getTeam({ id: TEAM[name] })
 
 /**
- * 
+ * public part of some of the following query functions
  * @param name team name
  */
 const getTeamStats = (name: string) => HLTV.getTeamStats({ id: TEAM[name] })
 
 /**
- * 
- * @param name team name
+ * query recent match according to team name
+ * log a table in console
+ * @param name team name 
  */
 export const getTeamMatch = (name: string) => getTeam(name).then(res => {
   const table = new Table({
@@ -38,7 +40,8 @@ export const getTeamMatch = (name: string) => getTeam(name).then(res => {
 }, handleError)
 
 /**
- * 
+ * query overview according to team name
+ * log a table in console
  * @param name team name
  */
 export const getTeamOverview = (name: string) => {
@@ -73,7 +76,9 @@ export const getTeamOverview = (name: string) => {
 }
 
 /**
- * 
+ * query all team rankings for now
+ * log a table in console
+ * TODO: support query historic rankings
  */
 export const getTeamRanking = () => {
   HLTV.getTeamRanking().then(res => {
@@ -89,7 +94,8 @@ export const getTeamRanking = () => {
 }
 
 /**
- * 
+ * query all upcoming matches
+ * log a table in console
  */
 export const getMatches = () => HLTV.getMatches().then(res => {
   const table = new Table({
@@ -121,7 +127,7 @@ export const getMatches = () => HLTV.getMatches().then(res => {
 }, handleError)
 
 /**
- * 
+ * //TODO: tablify it
  * @param name player name
  */
 export const getPlayer = (name: string) => HLTV.getPlayer({ id: PLAYER[name] }).then(console.log, handleError)
