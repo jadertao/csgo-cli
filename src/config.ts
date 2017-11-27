@@ -1,4 +1,4 @@
-import { getTeamMatch, getTeamOverview, getTeamRanking, getMatches, getPlayer } from './query'
+import { getTeamMatch, getTeamOverview, getTeamRanking, getMatches, getPlayer, getTeamPlayer } from './query'
 
 
 interface command {
@@ -30,20 +30,27 @@ export const config: config = {
       option: [
         ['-m --match', 'query recent matches'],
         ['-o --overview', 'query overview'],
+        ['-p --player', 'query players of this team'],
         ['-r --ranking', 'query current ranking']
       ],
       handler: (name: string, options: any) => {
         if (name) name = name.toLowerCase()
-        if (options.match && !options.overview && !options.ranking) {
+        if (options.match && !options.overview && !options.player && !options.ranking) {
           if (!paramCheck(name)) return
           console.log(`querying recent matches of team ${name}...`)
           getTeamMatch(name)
           return
         }
-        if (!options.match && options.overview && !options.ranking) {
+        if (!options.match && options.overview && !options.player && !options.ranking) {
           if (!paramCheck(name)) return
           console.log(`querying team overview of team ${name}...`)
           getTeamOverview(name)
+          return
+        }
+        if (!options.match && !options.overview && options.player && !options.ranking) {
+          if (!paramCheck(name)) return
+          console.log(`querying players of team ${name}...`)
+          getTeamPlayer(name)
           return
         }
         if (!options.match && !options.overview && options.ranking) {

@@ -23,6 +23,20 @@ exports.getTeamOverview = (name) => {
         const p_table = new Table({
             head: ['currentPlayers', 'historicPlayers', 'standinPlayers']
         });
+        const keys = Object.keys(res.overview);
+        keys.forEach(k => {
+            let item = {};
+            item[k] = res.overview[k];
+            o_table.push(item);
+        });
+        console.log(o_table.toString());
+    }, handleError);
+};
+exports.getTeamPlayer = (name) => {
+    getTeamStats(name).then(res => {
+        const p_table = new Table({
+            head: ['currentPlayers', 'historicPlayers', 'standinPlayers']
+        });
         const { currentLineup, historicPlayers, standins } = res;
         const length = Math.max(currentLineup.length, historicPlayers.length, standins.length);
         Array.from({ length }, (v, i) => i).forEach(n => {
@@ -32,13 +46,6 @@ exports.getTeamOverview = (name) => {
             row[2] = standins[n] ? standins[n].name : '';
             p_table.push(row);
         });
-        const keys = Object.keys(res.overview);
-        keys.forEach(k => {
-            let item = {};
-            item[k] = res.overview[k];
-            o_table.push(item);
-        });
-        console.log(o_table.toString());
         console.log(p_table.toString());
     }, handleError);
 };

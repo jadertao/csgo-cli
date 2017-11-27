@@ -52,16 +52,7 @@ export const getTeamOverview = (name: string) => {
     const p_table = new Table({
       head: ['currentPlayers', 'historicPlayers', 'standinPlayers']
     })
-    const { currentLineup, historicPlayers, standins } = res
-    const length = Math.max(currentLineup.length, historicPlayers.length, standins.length)
 
-    Array.from({ length }, (v, i) => i).forEach(n => {
-      let row = []
-      row[0] = currentLineup[n] ? currentLineup[n].name : ''
-      row[1] = historicPlayers[n] ? historicPlayers[n].name : ''
-      row[2] = standins[n] ? standins[n].name : ''
-      p_table.push(row)
-    })
 
     const keys = Object.keys(res.overview)
     keys.forEach(k => {
@@ -71,6 +62,26 @@ export const getTeamOverview = (name: string) => {
     })
 
     console.log(o_table.toString())
+
+  }, handleError)
+}
+
+export const getTeamPlayer = (name: string) => {
+  getTeamStats(name).then(res => {
+    const p_table = new Table({
+      head: ['currentPlayers', 'historicPlayers', 'standinPlayers']
+    })
+    const { currentLineup, historicPlayers, standins } = res
+
+    const length = Math.max(currentLineup.length, historicPlayers.length, standins.length)
+
+    Array.from({ length }, (v, i) => i).forEach(n => {
+      let row = []
+      row[0] = currentLineup[n] ? currentLineup[n].name : ''
+      row[1] = historicPlayers[n] ? historicPlayers[n].name : ''
+      row[2] = standins[n] ? standins[n].name : ''
+      p_table.push(row)
+    })
     console.log(p_table.toString())
   }, handleError)
 }

@@ -18,23 +18,31 @@ exports.config = {
             option: [
                 ['-m --match', 'query recent matches'],
                 ['-o --overview', 'query overview'],
+                ['-p --player', 'query players of this team'],
                 ['-r --ranking', 'query current ranking']
             ],
             handler: (name, options) => {
                 if (name)
                     name = name.toLowerCase();
-                if (options.match && !options.overview && !options.ranking) {
+                if (options.match && !options.overview && !options.player && !options.ranking) {
                     if (!paramCheck(name))
                         return;
                     console.log(`querying recent matches of team ${name}...`);
                     query_1.getTeamMatch(name);
                     return;
                 }
-                if (!options.match && options.overview && !options.ranking) {
+                if (!options.match && options.overview && !options.player && !options.ranking) {
                     if (!paramCheck(name))
                         return;
                     console.log(`querying team overview of team ${name}...`);
                     query_1.getTeamOverview(name);
+                    return;
+                }
+                if (!options.match && !options.overview && options.player && !options.ranking) {
+                    if (!paramCheck(name))
+                        return;
+                    console.log(`querying players of team ${name}...`);
+                    query_1.getTeamPlayer(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
