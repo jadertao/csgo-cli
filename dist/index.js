@@ -8,11 +8,8 @@ const mount = (cli, config) => {
     config.command.forEach(cmd => {
         let _cli = cli.command(cmd.name);
         _cli.alias(cmd.alias).description(cmd.description);
-        if (cmd.option.length) {
-            cmd.option.forEach(o => {
-                _cli.option(o[0], o[1]);
-            });
-        }
+        if (cmd.option.length)
+            cmd.option.forEach(o => _cli.option(o[0], o[1]));
         _cli.action(cmd.handler);
     });
 };
