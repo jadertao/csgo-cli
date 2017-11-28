@@ -125,15 +125,15 @@ const getUpcomingMatches = () => __awaiter(this, void 0, void 0, function* () {
 const getPlayer = (name) => __awaiter(this, void 0, void 0, function* () {
     try {
         const res = yield hltv_1.default.getPlayer({ id: constant_1.PLAYER[name] });
-        const tableData = new Table({
+        const tableData = {
             head: ['key', 'value'],
             value: []
-        });
+        };
         const value = tableData.value;
         value.push({ name: res.name });
         value.push({ ['name in game']: res.ign });
         value.push({ age: res.age });
-        value.push({ team: res.team.name });
+        value.push({ team: res.team && res.team.name || '' });
         value.push({ country: res.country.name });
         value.push({ [' ']: ' ' });
         value.push({ statistics: '' });
@@ -154,6 +154,7 @@ const getPlayer = (name) => __awaiter(this, void 0, void 0, function* () {
     }
     catch (e) {
         handleError(e);
+        console.log(e);
     }
 });
 const dataToTable = (data) => {
@@ -171,6 +172,7 @@ const fnWrapper = (fn) => (name) => __awaiter(this, void 0, void 0, function* ()
         dataToTable(tableData);
     }
     catch (e) {
+        console.log(e);
         handleError(e);
     }
 });

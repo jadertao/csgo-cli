@@ -170,16 +170,16 @@ const getUpcomingMatches = async (): Promise<tableData> => {
 const getPlayer = async (name: string): Promise<tableData> => {
   try {
     const res = await HLTV.getPlayer({ id: PLAYER[name] })
-    const tableData: tableData = new Table({
+    const tableData: tableData = {
       head: ['key', 'value'],
       value: []
-    })
+    }
     // 这段代码有优化的必要吗？
     const value = tableData.value
     value.push({ name: res.name })
     value.push({ ['name in game']: res.ign })
     value.push({ age: res.age })
-    value.push({ team: res.team.name })
+    value.push({ team: res.team && res.team.name || '' })
     value.push({ country: res.country.name })
     value.push({ [' ']: ' ' })
     value.push({ statistics: '' })
@@ -199,6 +199,7 @@ const getPlayer = async (name: string): Promise<tableData> => {
     return tableData
   } catch (e) {
     handleError(e)
+    console.log(e)
   }
 }
 
@@ -217,6 +218,7 @@ const fnWrapper = (fn: any) => async (name?: string) => {
     const tableData: tableData = await fn(name)
     dataToTable(tableData)
   } catch (e) {
+    console.log(e)
     handleError(e)
   }
 }
