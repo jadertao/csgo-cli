@@ -1,4 +1,4 @@
-import { getTeamMatch, getTeamOverview, getTeamRanking, getMatches, getPlayer, getTeamPlayer } from './query'
+import { printTeamMatches, printTeamOverview, printTeamRanking, printUpcomingMatches, printPlayer, printTeamPlayers } from './query'
 
 
 interface command {
@@ -38,24 +38,24 @@ export const config: config = {
         if (options.match && !options.overview && !options.player && !options.ranking) {
           if (!paramCheck(name)) return
           console.log(`querying recent matches of team ${name}...`)
-          getTeamMatch(name)
+          printTeamMatches(name)
           return
         }
         if (!options.match && options.overview && !options.player && !options.ranking) {
           if (!paramCheck(name)) return
           console.log(`querying team overview of team ${name}...`)
-          getTeamOverview(name)
+          printTeamOverview(name)
           return
         }
         if (!options.match && !options.overview && options.player && !options.ranking) {
           if (!paramCheck(name)) return
           console.log(`querying players of team ${name}...`)
-          getTeamPlayer(name)
+          printTeamPlayers(name)
           return
         }
         if (!options.match && !options.overview && options.ranking) {
           console.log(`querying current team ranking of all team...`)
-          getTeamRanking()
+          printTeamRanking()
           return
         }
         console.log("a valid option is required, see 'csgo team -h'")
@@ -66,14 +66,14 @@ export const config: config = {
       alias: 'm',
       description: 'query matches schedule',
       option: [],
-      handler: getMatches
+      handler: printUpcomingMatches
     },
     {
       name: 'player',
       alias: 'p',
       description: 'query player info',
       option: [],
-      handler: getPlayer
+      handler: printPlayer
     }
   ]
 }

@@ -28,26 +28,26 @@ exports.config = {
                     if (!paramCheck(name))
                         return;
                     console.log(`querying recent matches of team ${name}...`);
-                    query_1.getTeamMatch(name);
+                    query_1.printTeamMatches(name);
                     return;
                 }
                 if (!options.match && options.overview && !options.player && !options.ranking) {
                     if (!paramCheck(name))
                         return;
                     console.log(`querying team overview of team ${name}...`);
-                    query_1.getTeamOverview(name);
+                    query_1.printTeamOverview(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.player && !options.ranking) {
                     if (!paramCheck(name))
                         return;
                     console.log(`querying players of team ${name}...`);
-                    query_1.getTeamPlayer(name);
+                    query_1.printTeamPlayers(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
                     console.log(`querying current team ranking of all team...`);
-                    query_1.getTeamRanking();
+                    query_1.printTeamRanking();
                     return;
                 }
                 console.log("a valid option is required, see 'csgo team -h'");
@@ -58,14 +58,14 @@ exports.config = {
             alias: 'm',
             description: 'query matches schedule',
             option: [],
-            handler: query_1.getMatches
+            handler: query_1.printUpcomingMatches
         },
         {
             name: 'player',
             alias: 'p',
             description: 'query player info',
             option: [],
-            handler: query_1.getPlayer
+            handler: query_1.printPlayer
         }
     ]
 };
