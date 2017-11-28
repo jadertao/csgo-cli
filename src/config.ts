@@ -15,7 +15,7 @@ interface config {
 }
 const paramCheck = name => {
   if (!name) {
-    console.log('team name is required')
+    console.log('team or player name is required')
     return false
   }
   return true
@@ -64,16 +64,23 @@ export const config: config = {
     {
       name: 'match',
       alias: 'm',
-      description: 'query matches schedule',
+      description: 'query upcoming matches schedule',
       option: [],
-      handler: printUpcomingMatches
+      handler: () => {
+        console.log('querying upcoming matches schedule')
+        printUpcomingMatches()
+      }
     },
     {
       name: 'player',
       alias: 'p',
       description: 'query player info',
       option: [],
-      handler: printPlayer
+      handler: (name) => {
+        if (!paramCheck(name)) return
+        console.log(`querying info of ${name}`)
+        printPlayer(name)
+      }
     }
   ]
 }

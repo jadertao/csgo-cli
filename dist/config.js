@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const query_1 = require("./query");
 const paramCheck = name => {
     if (!name) {
-        console.log('team name is required');
+        console.log('team or player name is required');
         return false;
     }
     return true;
@@ -56,16 +56,24 @@ exports.config = {
         {
             name: 'match',
             alias: 'm',
-            description: 'query matches schedule',
+            description: 'query upcoming matches schedule',
             option: [],
-            handler: query_1.printUpcomingMatches
+            handler: () => {
+                console.log('querying upcoming matches schedule');
+                query_1.printUpcomingMatches();
+            }
         },
         {
             name: 'player',
             alias: 'p',
             description: 'query player info',
             option: [],
-            handler: query_1.printPlayer
+            handler: (name) => {
+                if (!paramCheck(name))
+                    return;
+                console.log(`querying info of ${name}`);
+                query_1.printPlayer(name);
+            }
         }
     ]
 };
