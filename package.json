@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/mocha/bin/mocha --require intelli-espower-loader test/query.spec.js"
   },
   "bin": {
     "csgo": "dist/index.js"
@@ -22,6 +22,8 @@
     "@types/commander": "^2.11.0",
     "@types/node": "^8.0.52",
     "@types/rx": "^4.1.1",
+    "mocha": "^4.0.1",
+    "power-assert": "^1.4.4",
     "typescript": "^2.6.1"
   }
 }
