@@ -327,6 +327,7 @@ export const PLAYER = {
   nifty: "9069",
   niki1: "8917",
   niko: "10264",
+  Niko:"3741",
   nitr0: "7687",
   nk4y: "10761",
   nkl: "5327",
