@@ -1,5 +1,5 @@
 import { printTeamMatches, printTeamOverview, printTeamRanking, printUpcomingMatches, printPlayer, printTeamPlayers } from './query'
-
+import { teamCheck, playerCheck } from './util'
 
 interface command {
   name: string,
@@ -13,13 +13,8 @@ interface config {
   version: string,
   command: Array<command>
 }
-const paramCheck = name => {
-  if (!name) {
-    console.log('team or player name is required')
-    return false
-  }
-  return true
-}
+
+
 export const config: config = {
   version: '0.1.0',
   command: [
@@ -36,19 +31,19 @@ export const config: config = {
       handler: (name: string, options: any) => {
         if (name) name = name.toLowerCase()
         if (options.match && !options.overview && !options.player && !options.ranking) {
-          if (!paramCheck(name)) return
+          if (!teamCheck(name)) return
           console.log(`querying recent matches of team ${name}...`)
           printTeamMatches(name)
           return
         }
         if (!options.match && options.overview && !options.player && !options.ranking) {
-          if (!paramCheck(name)) return
+          if (!teamCheck(name)) return
           console.log(`querying team overview of team ${name}...`)
           printTeamOverview(name)
           return
         }
         if (!options.match && !options.overview && options.player && !options.ranking) {
-          if (!paramCheck(name)) return
+          if (!teamCheck(name)) return
           console.log(`querying players of team ${name}...`)
           printTeamPlayers(name)
           return
@@ -64,10 +59,10 @@ export const config: config = {
     {
       name: 'match',
       alias: 'm',
-      description: 'query upcoming matches schedule',
+      description: 'query the time table of upcoming matches',
       option: [],
       handler: () => {
-        console.log('querying upcoming matches schedule')
+        console.log('querying the time table of upcoming matches...')
         printUpcomingMatches()
       }
     },
@@ -77,8 +72,8 @@ export const config: config = {
       description: 'query player info',
       option: [],
       handler: (name) => {
-        if (!paramCheck(name)) return
-        console.log(`querying info of ${name}`)
+        if (!playerCheck(name)) return
+        console.log(`querying info of ${name}...`)
         printPlayer(name)
       }
     }

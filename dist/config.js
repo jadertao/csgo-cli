@@ -1,13 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const query_1 = require("./query");
-const paramCheck = name => {
-    if (!name) {
-        console.log('team or player name is required');
-        return false;
-    }
-    return true;
-};
+const util_1 = require("./util");
 exports.config = {
     version: '0.1.0',
     command: [
@@ -25,21 +19,21 @@ exports.config = {
                 if (name)
                     name = name.toLowerCase();
                 if (options.match && !options.overview && !options.player && !options.ranking) {
-                    if (!paramCheck(name))
+                    if (!util_1.teamCheck(name))
                         return;
                     console.log(`querying recent matches of team ${name}...`);
                     query_1.printTeamMatches(name);
                     return;
                 }
                 if (!options.match && options.overview && !options.player && !options.ranking) {
-                    if (!paramCheck(name))
+                    if (!util_1.teamCheck(name))
                         return;
                     console.log(`querying team overview of team ${name}...`);
                     query_1.printTeamOverview(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.player && !options.ranking) {
-                    if (!paramCheck(name))
+                    if (!util_1.teamCheck(name))
                         return;
                     console.log(`querying players of team ${name}...`);
                     query_1.printTeamPlayers(name);
@@ -56,10 +50,10 @@ exports.config = {
         {
             name: 'match',
             alias: 'm',
-            description: 'query upcoming matches schedule',
+            description: 'query the time table of upcoming matches',
             option: [],
             handler: () => {
-                console.log('querying upcoming matches schedule');
+                console.log('querying the time table of upcoming matches...');
                 query_1.printUpcomingMatches();
             }
         },
@@ -69,9 +63,9 @@ exports.config = {
             description: 'query player info',
             option: [],
             handler: (name) => {
-                if (!paramCheck(name))
+                if (!util_1.playerCheck(name))
                     return;
-                console.log(`querying info of ${name}`);
+                console.log(`querying info of ${name}...`);
                 query_1.printPlayer(name);
             }
         }
