@@ -1,5 +1,6 @@
 import { printTeamMatches, printTeamOverview, printTeamRanking, printUpcomingMatches, printPlayer, printTeamPlayers } from './query'
-import { teamCheck, playerCheck } from './util'
+import { teamCheck, playerCheck, log } from './util'
+import { helpers } from 'rx';
 
 interface command {
   name: string,
@@ -32,28 +33,28 @@ export const config: config = {
         if (name) name = name.toLowerCase()
         if (options.match && !options.overview && !options.player && !options.ranking) {
           if (!teamCheck(name)) return
-          console.log(`querying recent matches of team ${name}...`)
+          log.hint(`querying recent matches of team ${name}...`)
           printTeamMatches(name)
           return
         }
         if (!options.match && options.overview && !options.player && !options.ranking) {
           if (!teamCheck(name)) return
-          console.log(`querying team overview of team ${name}...`)
+          log.hint(`querying team overview of team ${name}...`)
           printTeamOverview(name)
           return
         }
         if (!options.match && !options.overview && options.player && !options.ranking) {
           if (!teamCheck(name)) return
-          console.log(`querying players of team ${name}...`)
+          log.hint(`querying players of team ${name}...`)
           printTeamPlayers(name)
           return
         }
         if (!options.match && !options.overview && options.ranking) {
-          console.log(`querying current team ranking of all team...`)
+          log.hint(`querying current team ranking of all team...`)
           printTeamRanking()
           return
         }
-        console.log("a valid option is required, see 'csgo team -h'")
+        log.warn("a valid option is required, see 'csgo team -h'")
       }
     },
     {
@@ -62,7 +63,7 @@ export const config: config = {
       description: 'query the time table of upcoming matches',
       option: [],
       handler: () => {
-        console.log('querying the time table of upcoming matches...')
+        log.hint('querying the time table of upcoming matches...')
         printUpcomingMatches()
       }
     },
@@ -73,7 +74,7 @@ export const config: config = {
       option: [],
       handler: (name) => {
         if (!playerCheck(name)) return
-        console.log(`querying info of ${name}...`)
+        log.hint(`querying info of ${name}...`)
         printPlayer(name)
       }
     }

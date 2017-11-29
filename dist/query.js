@@ -11,7 +11,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const hltv_1 = require("hltv");
 const Table = require("cli-table2");
 const constant_1 = require("./constant");
-const handleError = err => console.log(`${err.name} ${err.errno}`);
+const util_1 = require("./util");
+const handleError = err => util_1.log.error(`${err.name} ${err.errno}`);
 const getTeam = (name) => hltv_1.default.getTeam({ id: constant_1.TEAM[name] });
 const getTeamStats = (name) => hltv_1.default.getTeamStats({ id: constant_1.TEAM[name] });
 const getTeamMatches = (name) => __awaiter(this, void 0, void 0, function* () {
@@ -154,17 +155,20 @@ const getPlayer = (name) => __awaiter(this, void 0, void 0, function* () {
     }
     catch (e) {
         handleError(e);
-        console.log(e);
     }
 });
 const dataToTable = (data) => {
+    if (!data) {
+        util_1.log.error('no valid result');
+        return;
+    }
     const table = new Table({
         head: data.head
     });
     data.value.forEach(i => {
         table.push(i);
     });
-    console.log(table.toString());
+    util_1.log.default(table.toString());
 };
 const fnWrapper = (fn) => (name) => __awaiter(this, void 0, void 0, function* () {
     try {
@@ -172,7 +176,6 @@ const fnWrapper = (fn) => (name) => __awaiter(this, void 0, void 0, function* ()
         dataToTable(tableData);
     }
     catch (e) {
-        console.log(e);
         handleError(e);
     }
 });

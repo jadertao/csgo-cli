@@ -2,7 +2,7 @@ import HLTV from 'hltv'
 import * as Table from 'cli-table2'
 
 import { TEAM, PLAYER, MONTH } from './constant'
-
+import {log} from './util'
 interface tableData {
   head: string[],
   value: any[]
@@ -13,7 +13,7 @@ interface tableData {
  * TODO: handle errors properly
  * @param err  error
  */
-const handleError = err => console.log(`${err.name} ${err.errno}`)
+const handleError = err => log.error(`${err.name} ${err.errno}`)
 
 /**
  * public part of some of the following query functions
@@ -199,18 +199,21 @@ const getPlayer = async (name: string): Promise<tableData> => {
     return tableData
   } catch (e) {
     handleError(e)
-    console.log(e)
   }
 }
 
 const dataToTable = (data: tableData) => {
+  if(!data){
+    log.error('no valid result')
+    return
+  }
   const table = new Table({
     head: data.head
   })
   data.value.forEach(i => {
     table.push(i)
   })
-  console.log(table.toString())
+  log.default(table.toString())
 }
 
 const fnWrapper = (fn: any) => async (name?: string) => {
@@ -218,7 +221,6 @@ const fnWrapper = (fn: any) => async (name?: string) => {
     const tableData: tableData = await fn(name)
     dataToTable(tableData)
   } catch (e) {
-    console.log(e)
     handleError(e)
   }
 }
