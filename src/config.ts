@@ -1,6 +1,5 @@
 import { printTeamMatches, printTeamOverview, printTeamRanking, printUpcomingMatches, printPlayer, printTeamPlayers } from './query'
 import { teamCheck, playerCheck, log } from './util'
-import { helpers } from 'rx';
 
 interface command {
   name: string,
