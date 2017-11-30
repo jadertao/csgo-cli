@@ -16,14 +16,12 @@
     "cli-table2": "^0.2.0",
     "commander": "^2.11.0",
     "hltv": "^2.3.1",
+    "progress": "^2.0.0",
     "rxjs": "^5.5.2"
   },
   "devDependencies": {
     "@types/commander": "^2.11.0",
     "@types/node": "^8.0.52",
-    "@types/rx": "^4.1.1",
-    "mocha": "^4.0.1",
-    "power-assert": "^1.4.4",
     "typescript": "^2.6.1"
   }
 }
