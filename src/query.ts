@@ -2,7 +2,8 @@ import HLTV from 'hltv'
 import * as Table from 'cli-table2'
 
 import { TEAM, PLAYER, MONTH } from './constant'
-import {log} from './util'
+import { log, printTimeWrap } from './util'
+
 interface tableData {
   head: string[],
   value: any[]
@@ -203,7 +204,7 @@ const getPlayer = async (name: string): Promise<tableData> => {
 }
 
 const dataToTable = (data: tableData) => {
-  if(!data){
+  if (!data) {
     log.error('no valid result')
     return
   }
@@ -216,7 +217,7 @@ const dataToTable = (data: tableData) => {
   log.default(table.toString())
 }
 
-const fnWrapper = (fn: any) => async (name?: string) => {
+const logWrap = (fn: any) => async (name?: string) => {
   try {
     const tableData: tableData = await fn(name)
     dataToTable(tableData)
@@ -226,9 +227,16 @@ const fnWrapper = (fn: any) => async (name?: string) => {
 }
 
 
-export const printTeamMatches = fnWrapper(getTeamMatches)
-export const printTeamOverview = fnWrapper(getTeamOverview)
-export const printTeamRanking = fnWrapper(getTeamRanking)
-export const printUpcomingMatches = fnWrapper(getUpcomingMatches)
-export const printPlayer = fnWrapper(getPlayer)
-export const printTeamPlayers = fnWrapper(getTeamPlayers)
+export const printTeamMatches = logWrap(getTeamMatches)
+export const printTeamOverview = logWrap(getTeamOverview)
+export const printTeamRanking = logWrap(getTeamRanking)
+export const printUpcomingMatches = logWrap(getUpcomingMatches)
+export const printPlayer = logWrap(getPlayer)
+export const printTeamPlayers = logWrap(getTeamPlayers)
+
+export const printTeamMatchesTime = printTimeWrap(printTeamMatches)
+export const printTeamOverviewTime = printTimeWrap(printTeamOverview)
+export const printTeamRankingTime = printTimeWrap(printTeamRanking)
+export const printUpcomingMatchesTime = printTimeWrap(printUpcomingMatches)
+export const printPlayerTime = printTimeWrap(printPlayer)
+export const printTeamPlayersTime = printTimeWrap(printTeamPlayers)

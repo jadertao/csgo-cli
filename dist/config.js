@@ -22,26 +22,26 @@ exports.config = {
                     if (!util_1.teamCheck(name))
                         return;
                     util_1.log.hint(`querying recent matches of team ${name}...`);
-                    query_1.printTeamMatches(name);
+                    query_1.printTeamMatchesTime(name);
                     return;
                 }
                 if (!options.match && options.overview && !options.player && !options.ranking) {
                     if (!util_1.teamCheck(name))
                         return;
                     util_1.log.hint(`querying team overview of team ${name}...`);
-                    query_1.printTeamOverview(name);
+                    query_1.printTeamOverviewTime(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.player && !options.ranking) {
                     if (!util_1.teamCheck(name))
                         return;
                     util_1.log.hint(`querying players of team ${name}...`);
-                    query_1.printTeamPlayers(name);
+                    query_1.printTeamPlayersTime(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
                     util_1.log.hint(`querying current team ranking of all team...`);
-                    query_1.printTeamRanking();
+                    query_1.printTeamRankingTime();
                     return;
                 }
                 util_1.log.warn("a valid option is required, see 'csgo team -h'");
@@ -54,7 +54,7 @@ exports.config = {
             option: [],
             handler: () => {
                 util_1.log.hint('querying the time table of upcoming matches...');
-                query_1.printUpcomingMatches();
+                query_1.printUpcomingMatchesTime();
             }
         },
         {
@@ -66,7 +66,7 @@ exports.config = {
                 if (!util_1.playerCheck(name))
                     return;
                 util_1.log.hint(`querying info of ${name}...`);
-                query_1.printPlayer(name);
+                query_1.printPlayerTime(name);
             }
         }
     ]

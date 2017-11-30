@@ -1,4 +1,4 @@
-import { printTeamMatches, printTeamOverview, printTeamRanking, printUpcomingMatches, printPlayer, printTeamPlayers } from './query'
+import { printTeamMatchesTime, printTeamOverviewTime, printTeamRankingTime, printUpcomingMatchesTime, printPlayerTime, printTeamPlayersTime } from './query'
 import { teamCheck, playerCheck, log } from './util'
 
 interface command {
@@ -33,24 +33,24 @@ export const config: config = {
         if (options.match && !options.overview && !options.player && !options.ranking) {
           if (!teamCheck(name)) return
           log.hint(`querying recent matches of team ${name}...`)
-          printTeamMatches(name)
+          printTeamMatchesTime(name)
           return
         }
         if (!options.match && options.overview && !options.player && !options.ranking) {
           if (!teamCheck(name)) return
           log.hint(`querying team overview of team ${name}...`)
-          printTeamOverview(name)
+          printTeamOverviewTime(name)
           return
         }
         if (!options.match && !options.overview && options.player && !options.ranking) {
           if (!teamCheck(name)) return
           log.hint(`querying players of team ${name}...`)
-          printTeamPlayers(name)
+          printTeamPlayersTime(name)
           return
         }
         if (!options.match && !options.overview && options.ranking) {
           log.hint(`querying current team ranking of all team...`)
-          printTeamRanking()
+          printTeamRankingTime()
           return
         }
         log.warn("a valid option is required, see 'csgo team -h'")
@@ -63,7 +63,7 @@ export const config: config = {
       option: [],
       handler: () => {
         log.hint('querying the time table of upcoming matches...')
-        printUpcomingMatches()
+        printUpcomingMatchesTime()
       }
     },
     {
@@ -74,7 +74,7 @@ export const config: config = {
       handler: (name) => {
         if (!playerCheck(name)) return
         log.hint(`querying info of ${name}...`)
-        printPlayer(name)
+        printPlayerTime(name)
       }
     }
   ]

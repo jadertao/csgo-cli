@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import * as Progress from 'progress'
 import { TEAM, PLAYER } from './constant'
 
+
 export const log = {
   default: console.log,
   hint: v => console.log(chalk.greenBright(v)),
@@ -73,3 +74,11 @@ export class waitingHint {
 }
 
 
+export const printTimeWrap = fn => async (args?: any) => {
+  const startTime = (new Date()).getTime()
+  const argvs = args ? Array.from(args) : null
+  await fn.apply(null, argvs)
+  const endTime = (new Date()).getTime()
+  const duringSecond = (endTime - startTime) / 1000
+  log.hint(`takes ${duringSecond} second`)
+}

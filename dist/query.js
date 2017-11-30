@@ -170,7 +170,7 @@ const dataToTable = (data) => {
     });
     util_1.log.default(table.toString());
 };
-const fnWrapper = (fn) => (name) => __awaiter(this, void 0, void 0, function* () {
+const logWrap = (fn) => (name) => __awaiter(this, void 0, void 0, function* () {
     try {
         const tableData = yield fn(name);
         dataToTable(tableData);
@@ -179,9 +179,15 @@ const fnWrapper = (fn) => (name) => __awaiter(this, void 0, void 0, function* ()
         handleError(e);
     }
 });
-exports.printTeamMatches = fnWrapper(getTeamMatches);
-exports.printTeamOverview = fnWrapper(getTeamOverview);
-exports.printTeamRanking = fnWrapper(getTeamRanking);
-exports.printUpcomingMatches = fnWrapper(getUpcomingMatches);
-exports.printPlayer = fnWrapper(getPlayer);
-exports.printTeamPlayers = fnWrapper(getTeamPlayers);
+exports.printTeamMatches = logWrap(getTeamMatches);
+exports.printTeamOverview = logWrap(getTeamOverview);
+exports.printTeamRanking = logWrap(getTeamRanking);
+exports.printUpcomingMatches = logWrap(getUpcomingMatches);
+exports.printPlayer = logWrap(getPlayer);
+exports.printTeamPlayers = logWrap(getTeamPlayers);
+exports.printTeamMatchesTime = util_1.printTimeWrap(exports.printTeamMatches);
+exports.printTeamOverviewTime = util_1.printTimeWrap(exports.printTeamOverview);
+exports.printTeamRankingTime = util_1.printTimeWrap(exports.printTeamRanking);
+exports.printUpcomingMatchesTime = util_1.printTimeWrap(exports.printUpcomingMatches);
+exports.printPlayerTime = util_1.printTimeWrap(exports.printPlayer);
+exports.printTeamPlayersTime = util_1.printTimeWrap(exports.printTeamPlayers);
