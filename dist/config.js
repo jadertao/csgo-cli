@@ -21,30 +21,30 @@ exports.config = {
                 if (options.match && !options.overview && !options.player && !options.ranking) {
                     if (!util_1.teamCheck(name))
                         return;
-                    console.log(`querying recent matches of team ${name}...`);
+                    util_1.log.hint(`querying recent matches of team ${name}...`);
                     query_1.printTeamMatches(name);
                     return;
                 }
                 if (!options.match && options.overview && !options.player && !options.ranking) {
                     if (!util_1.teamCheck(name))
                         return;
-                    console.log(`querying team overview of team ${name}...`);
+                    util_1.log.hint(`querying team overview of team ${name}...`);
                     query_1.printTeamOverview(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.player && !options.ranking) {
                     if (!util_1.teamCheck(name))
                         return;
-                    console.log(`querying players of team ${name}...`);
+                    util_1.log.hint(`querying players of team ${name}...`);
                     query_1.printTeamPlayers(name);
                     return;
                 }
                 if (!options.match && !options.overview && options.ranking) {
-                    console.log(`querying current team ranking of all team...`);
+                    util_1.log.hint(`querying current team ranking of all team...`);
                     query_1.printTeamRanking();
                     return;
                 }
-                console.log("a valid option is required, see 'csgo team -h'");
+                util_1.log.warn("a valid option is required, see 'csgo team -h'");
             }
         },
         {
@@ -53,7 +53,7 @@ exports.config = {
             description: 'query the time table of upcoming matches',
             option: [],
             handler: () => {
-                console.log('querying the time table of upcoming matches...');
+                util_1.log.hint('querying the time table of upcoming matches...');
                 query_1.printUpcomingMatches();
             }
         },
@@ -65,7 +65,7 @@ exports.config = {
             handler: (name) => {
                 if (!util_1.playerCheck(name))
                     return;
-                console.log(`querying info of ${name}...`);
+                util_1.log.hint(`querying info of ${name}...`);
                 query_1.printPlayer(name);
             }
         }
