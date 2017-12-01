@@ -17,34 +17,33 @@ exports.log = {
     warn: v => console.log(chalk_1.default.yellowBright(v)),
     error: v => console.log(chalk_1.default.redBright(v))
 };
-exports.paramCheck = name => {
+exports.teamCheck = (name) => {
     if (!name) {
-        exports.log.warn('team or player name is required');
+        exports.log.warn('team name is required');
         return false;
     }
-    return true;
-};
-exports.teamCheck = name => {
-    if (!exports.paramCheck(name))
-        return false;
     if (name in constant_1.TEAM) {
         return true;
     }
     else {
         exports.log.warn('there is no such a team');
+        return false;
     }
 };
-exports.playerCheck = name => {
-    if (!exports.paramCheck(name))
+exports.playerCheck = (name) => {
+    if (!name) {
+        exports.log.warn('player name is required');
         return false;
+    }
     if (name in constant_1.PLAYER) {
         return true;
     }
     else {
         exports.log.warn('there is no such a player');
+        return false;
     }
 };
-class waitingHint {
+class dynamicHint {
     constructor(hint) {
         this.forward = () => {
             this.bar.tick(1, { title: this.hint });
@@ -65,7 +64,7 @@ class waitingHint {
             }
         };
         this.hint = hint;
-        this.bar = new Progress(':title :bar', {
+        this.bar = new Progress(':title:bar', {
             complete: '.',
             incomplete: ' ',
             total: 6
@@ -74,6 +73,19 @@ class waitingHint {
             clearTimeout(this.timer);
             this.bar.terminate();
         };
+    }
+}
+exports.dynamicHint = dynamicHint;
+class waitingHint {
+    constructor(dynamicHint, hint, fn) {
+        this.trigger = () => __awaiter(this, void 0, void 0, function* () {
+            this.dynamicHint.forward();
+            yield this.fn();
+            this.dynamicHint.terminate();
+        });
+        this.dynamicHint = new dynamicHint(hint);
+        this.fn = fn;
+        this.trigger();
     }
 }
 exports.waitingHint = waitingHint;
@@ -85,3 +97,15 @@ exports.printTimeWrap = fn => (args) => __awaiter(this, void 0, void 0, function
     const duringSecond = (endTime - startTime) / 1000;
     exports.log.hint(`takes ${duringSecond} second`);
 });
+exports.pickOption = (config, object) => {
+    const res = {
+        isSuccess: false,
+        value: ''
+    };
+    const filter = config.filter(v => object[v]);
+    if (filter.length === 1) {
+        res.isSuccess = true;
+        res.value = filter.join('');
+    }
+    return res;
+};
