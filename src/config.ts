@@ -1,5 +1,5 @@
 import { printTeamMatchesTime, printTeamOverviewTime, printTeamRankingTime, printUpcomingMatchesTime, printPlayerTime, printTeamPlayersTime } from './query'
-import { teamCheck, playerCheck, log } from './util'
+import { teamCheck, playerCheck, log, pickOption, waitingHint, dynamicHint } from './util'
 
 interface command {
   name: string,
@@ -30,30 +30,31 @@ export const config: config = {
       ],
       handler: (name: string, options: any) => {
         if (name) name = name.toLowerCase()
-        if (options.match && !options.overview && !options.player && !options.ranking) {
-          if (!teamCheck(name)) return
-          log.hint(`querying recent matches of team ${name}...`)
-          printTeamMatchesTime(name)
-          return
+        const config = ['match', 'overview', 'player', 'ranking']
+        const mountedOption = pickOption(config, options)
+        const optionEntry = {
+          match: name => {
+            if (!teamCheck(name)) return
+            new waitingHint(dynamicHint, `querying recent matches of team ${name}`, printTeamMatchesTime.bind(null, name))
+          },
+          overview: name => {
+            if (!teamCheck(name)) return
+            new waitingHint(dynamicHint, `querying team overview of team ${name}`, printTeamOverviewTime.bind(null, name))
+          },
+          player: name => {
+            if (!teamCheck(name)) return
+            new waitingHint(dynamicHint, `querying players of team ${name}`, printPlayerTime.bind(null, name))
+          },
+          ranking: name => {
+            if (!teamCheck(name)) return
+            new waitingHint(dynamicHint, `querying current team ranking of all team`, printTeamRankingTime)
+          }
         }
-        if (!options.match && options.overview && !options.player && !options.ranking) {
-          if (!teamCheck(name)) return
-          log.hint(`querying team overview of team ${name}...`)
-          printTeamOverviewTime(name)
-          return
+        if (mountedOption.isSuccess) {
+          optionEntry[mountedOption.value]()
+        } else {
+          log.warn("a valid option is required, see 'csgo team -h'")
         }
-        if (!options.match && !options.overview && options.player && !options.ranking) {
-          if (!teamCheck(name)) return
-          log.hint(`querying players of team ${name}...`)
-          printTeamPlayersTime(name)
-          return
-        }
-        if (!options.match && !options.overview && options.ranking) {
-          log.hint(`querying current team ranking of all team...`)
-          printTeamRankingTime()
-          return
-        }
-        log.warn("a valid option is required, see 'csgo team -h'")
       }
     },
     {
@@ -62,8 +63,7 @@ export const config: config = {
       description: 'query the time table of upcoming matches',
       option: [],
       handler: () => {
-        log.hint('querying the time table of upcoming matches...')
-        printUpcomingMatchesTime()
+        new waitingHint(dynamicHint, 'querying the time table of upcoming matches', printUpcomingMatchesTime)
       }
     },
     {
@@ -71,10 +71,9 @@ export const config: config = {
       alias: 'p',
       description: 'query player info',
       option: [],
-      handler: (name) => {
+      handler: name => {
         if (!playerCheck(name)) return
-        log.hint(`querying info of ${name}...`)
-        printPlayerTime(name)
+        new waitingHint(dynamicHint, `querying info of ${name}`, printPlayerTime.bind(null, name))
       }
     }
   ]

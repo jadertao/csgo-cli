@@ -18,33 +18,36 @@ exports.config = {
             handler: (name, options) => {
                 if (name)
                     name = name.toLowerCase();
-                if (options.match && !options.overview && !options.player && !options.ranking) {
-                    if (!util_1.teamCheck(name))
-                        return;
-                    util_1.log.hint(`querying recent matches of team ${name}...`);
-                    query_1.printTeamMatchesTime(name);
-                    return;
+                const config = ['match', 'overview', 'player', 'ranking'];
+                const mountedOption = util_1.pickOption(config, options);
+                const optionEntry = {
+                    match: name => {
+                        if (!util_1.teamCheck(name))
+                            return;
+                        new util_1.waitingHint(util_1.dynamicHint, `querying recent matches of team ${name}`, query_1.printTeamMatchesTime.bind(null, name));
+                    },
+                    overview: name => {
+                        if (!util_1.teamCheck(name))
+                            return;
+                        new util_1.waitingHint(util_1.dynamicHint, `querying team overview of team ${name}`, query_1.printTeamOverviewTime.bind(null, name));
+                    },
+                    player: name => {
+                        if (!util_1.teamCheck(name))
+                            return;
+                        new util_1.waitingHint(util_1.dynamicHint, `querying players of team ${name}`, query_1.printPlayerTime.bind(null, name));
+                    },
+                    ranking: name => {
+                        if (!util_1.teamCheck(name))
+                            return;
+                        new util_1.waitingHint(util_1.dynamicHint, `querying current team ranking of all team`, query_1.printTeamRankingTime);
+                    }
+                };
+                if (mountedOption.isSuccess) {
+                    optionEntry[mountedOption.value]();
                 }
-                if (!options.match && options.overview && !options.player && !options.ranking) {
-                    if (!util_1.teamCheck(name))
-                        return;
-                    util_1.log.hint(`querying team overview of team ${name}...`);
-                    query_1.printTeamOverviewTime(name);
-                    return;
+                else {
+                    util_1.log.warn("a valid option is required, see 'csgo team -h'");
                 }
-                if (!options.match && !options.overview && options.player && !options.ranking) {
-                    if (!util_1.teamCheck(name))
-                        return;
-                    util_1.log.hint(`querying players of team ${name}...`);
-                    query_1.printTeamPlayersTime(name);
-                    return;
-                }
-                if (!options.match && !options.overview && options.ranking) {
-                    util_1.log.hint(`querying current team ranking of all team...`);
-                    query_1.printTeamRankingTime();
-                    return;
-                }
-                util_1.log.warn("a valid option is required, see 'csgo team -h'");
             }
         },
         {
@@ -53,8 +56,7 @@ exports.config = {
             description: 'query the time table of upcoming matches',
             option: [],
             handler: () => {
-                util_1.log.hint('querying the time table of upcoming matches...');
-                query_1.printUpcomingMatchesTime();
+                new util_1.waitingHint(util_1.dynamicHint, 'querying the time table of upcoming matches', query_1.printUpcomingMatchesTime);
             }
         },
         {
@@ -62,11 +64,10 @@ exports.config = {
             alias: 'p',
             description: 'query player info',
             option: [],
-            handler: (name) => {
+            handler: name => {
                 if (!util_1.playerCheck(name))
                     return;
-                util_1.log.hint(`querying info of ${name}...`);
-                query_1.printPlayerTime(name);
+                new util_1.waitingHint(util_1.dynamicHint, `querying info of ${name}`, query_1.printPlayerTime.bind(null, name));
             }
         }
     ]
