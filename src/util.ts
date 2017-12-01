@@ -35,7 +35,7 @@ export const playerCheck = name => {
   }
 }
 
-export class waitingHint {
+class dynamicHint {
   private timer
   private hint
   public bar
@@ -48,7 +48,7 @@ export class waitingHint {
     })
     this.terminate = () => {
       clearTimeout(this.timer)
-      this.bar.terminate.call(this.bar)
+      this.bar.terminate()
     }
   }
 
@@ -73,6 +73,20 @@ export class waitingHint {
   public terminate
 }
 
+export class waitingHint {
+  private dynamicHint
+  private hint
+  private fn
+  constructor(dynamicHint, hint: string, fn) {
+    this.dynamicHint = new dynamicHint(hint)
+    this.fn = fn
+  }
+  public trigger = async () => {
+    this.dynamicHint.forward()
+    await this.fn()
+    this.dynamicHint.terminate()
+  }
+}
 
 export const printTimeWrap = fn => async (args?: any) => {
   const startTime = (new Date()).getTime()

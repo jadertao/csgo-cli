@@ -72,7 +72,7 @@ class waitingHint {
         });
         this.terminate = () => {
             clearTimeout(this.timer);
-            this.bar.terminate.call(this.bar);
+            this.bar.terminate();
         };
     }
 }
