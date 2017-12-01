@@ -214,6 +214,7 @@ const dataToTable = (data: tableData) => {
   data.value.forEach(i => {
     table.push(i)
   })
+  log.default('\n')
   log.default(table.toString())
 }
 

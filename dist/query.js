@@ -168,6 +168,7 @@ const dataToTable = (data) => {
     data.value.forEach(i => {
         table.push(i);
     });
+    util_1.log.default('\n');
     util_1.log.default(table.toString());
 };
 const logWrap = (fn) => (name) => __awaiter(this, void 0, void 0, function* () {
