@@ -14,7 +14,10 @@ interface tableData {
  * TODO: handle errors properly
  * @param err  error
  */
-const handleError = err => log.error(`${err.name} ${err.errno}`)
+const handleError = err => {
+  log.error('\n')
+  log.error(`${err.name} ${err.errno}`)
+}
 
 /**
  * public part of some of the following query functions
@@ -234,7 +237,7 @@ export const printTeamRanking = logWrap(getTeamRanking)
 export const printUpcomingMatches = logWrap(getUpcomingMatches)
 export const printPlayer = logWrap(getPlayer)
 export const printTeamPlayers = logWrap(getTeamPlayers)
-
+//TODO: fix error
 export const printTeamMatchesTime = printTimeWrap(printTeamMatches)
 export const printTeamOverviewTime = printTimeWrap(printTeamOverview)
 export const printTeamRankingTime = printTimeWrap(printTeamRanking)

@@ -12,7 +12,10 @@ const hltv_1 = require("hltv");
 const Table = require("cli-table2");
 const constant_1 = require("./constant");
 const util_1 = require("./util");
-const handleError = err => util_1.log.error(`${err.name} ${err.errno}`);
+const handleError = err => {
+    util_1.log.error('\n');
+    util_1.log.error(`${err.name} ${err.errno}`);
+};
 const getTeam = (name) => hltv_1.default.getTeam({ id: constant_1.TEAM[name] });
 const getTeamStats = (name) => hltv_1.default.getTeamStats({ id: constant_1.TEAM[name] });
 const getTeamMatches = (name) => __awaiter(this, void 0, void 0, function* () {
