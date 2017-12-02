@@ -1,4 +1,4 @@
-import { printTeamMatchesTime, printTeamOverviewTime, printTeamRankingTime, printUpcomingMatchesTime, printPlayerTime, printTeamPlayersTime } from './query'
+import { printTeamMatchesTime,printTeamMatches, printTeamOverviewTime, printTeamRankingTime, printUpcomingMatchesTime, printPlayerTime, printTeamPlayersTime } from './query'
 import { teamCheck, playerCheck, log, pickOption, waitingHint, dynamicHint } from './util'
 
 interface command {
@@ -26,7 +26,7 @@ export const config: config = {
         ['-m --match', 'query recent matches'],
         ['-o --overview', 'query overview'],
         ['-p --player', 'query players of this team'],
-        ['-r --ranking', 'query current ranking']
+        ['-r --ranking', 'query current ranking of all team']
       ],
       handler: (name: string, options: any) => {
         if (name) name = name.toLowerCase()
@@ -43,15 +43,14 @@ export const config: config = {
           },
           player: name => {
             if (!teamCheck(name)) return
-            new waitingHint(dynamicHint, `querying players of team ${name}`, printPlayerTime.bind(null, name))
+            new waitingHint(dynamicHint, `querying players of team ${name}`, printTeamPlayersTime.bind(null, name))
           },
           ranking: name => {
-            if (!teamCheck(name)) return
             new waitingHint(dynamicHint, `querying current team ranking of all team`, printTeamRankingTime)
           }
         }
         if (mountedOption.isSuccess) {
-          optionEntry[mountedOption.value]()
+          optionEntry[mountedOption.value](name)
         } else {
           log.warn("a valid option is required, see 'csgo team -h'")
         }

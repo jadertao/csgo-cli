@@ -13,7 +13,7 @@ exports.config = {
                 ['-m --match', 'query recent matches'],
                 ['-o --overview', 'query overview'],
                 ['-p --player', 'query players of this team'],
-                ['-r --ranking', 'query current ranking']
+                ['-r --ranking', 'query current ranking of all team']
             ],
             handler: (name, options) => {
                 if (name)
@@ -34,16 +34,14 @@ exports.config = {
                     player: name => {
                         if (!util_1.teamCheck(name))
                             return;
-                        new util_1.waitingHint(util_1.dynamicHint, `querying players of team ${name}`, query_1.printPlayerTime.bind(null, name));
+                        new util_1.waitingHint(util_1.dynamicHint, `querying players of team ${name}`, query_1.printTeamPlayersTime.bind(null, name));
                     },
                     ranking: name => {
-                        if (!util_1.teamCheck(name))
-                            return;
                         new util_1.waitingHint(util_1.dynamicHint, `querying current team ranking of all team`, query_1.printTeamRankingTime);
                     }
                 };
                 if (mountedOption.isSuccess) {
-                    optionEntry[mountedOption.value]();
+                    optionEntry[mountedOption.value](name);
                 }
                 else {
                     util_1.log.warn("a valid option is required, see 'csgo team -h'");
