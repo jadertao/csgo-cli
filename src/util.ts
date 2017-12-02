@@ -89,14 +89,14 @@ export class waitingHint {
   }
 }
 
-export const printTimeWrap = fn => async (args?: any) => {
+export const printTimeWrap = fn => async (name?: any) => {
   const startTime = (new Date()).getTime()
-  const argvs = args ? Array.from(args) : null
-  await fn.apply(null, argvs)
+  await fn(name)
   const endTime = (new Date()).getTime()
   const duringSecond = (endTime - startTime) / 1000
   log.hint(`takes ${duringSecond} second`)
 }
+
 
 export const pickOption = (config: string[], object) => {
   const res = {

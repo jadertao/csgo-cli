@@ -89,10 +89,9 @@ class waitingHint {
     }
 }
 exports.waitingHint = waitingHint;
-exports.printTimeWrap = fn => (args) => __awaiter(this, void 0, void 0, function* () {
+exports.printTimeWrap = fn => (name) => __awaiter(this, void 0, void 0, function* () {
     const startTime = (new Date()).getTime();
-    const argvs = args ? Array.from(args) : null;
-    yield fn.apply(null, argvs);
+    yield fn(name);
     const endTime = (new Date()).getTime();
     const duringSecond = (endTime - startTime) / 1000;
     exports.log.hint(`takes ${duringSecond} second`);
