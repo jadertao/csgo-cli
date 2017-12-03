@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha --require intelli-espower-loader test/query.spec.js"
+    "build": "tsc"
   },
   "bin": {
     "csgo": "dist/index.js"
