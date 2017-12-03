@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const hltv_1 = require("hltv");
 const Table = require("cli-table2");
+const hltv_1 = require("hltv");
 const constant_1 = require("./constant");
 const util_1 = require("./util");
-const handleError = err => {
+const handleError = (err) => {
     util_1.log.error('\n');
     util_1.log.error(`${err.name} ${err.errno}`);
 };
@@ -23,9 +23,9 @@ const getTeamMatches = (name) => __awaiter(this, void 0, void 0, function* () {
         const res = yield getTeam(name);
         const tableData = {
             head: ['opponent', 'result', 'event'],
-            value: []
+            value: [],
         };
-        res.recentResults.forEach(m => {
+        res.recentResults.forEach((m) => {
             tableData.value.push([m.enemyTeam.name, m.result, m.event.name]);
         });
         return tableData;
@@ -39,11 +39,11 @@ const getTeamOverview = (name) => __awaiter(this, void 0, void 0, function* () {
         const res = yield getTeamStats(name);
         const tableData = {
             head: ['key', 'value'],
-            value: []
+            value: [],
         };
         const keys = Object.keys(res.overview);
-        keys.forEach(k => {
-            let item = {};
+        keys.forEach((k) => {
+            const item = {};
             item[k] = res.overview[k];
             tableData.value.push(item);
         });
@@ -58,12 +58,12 @@ const getTeamPlayers = (name) => __awaiter(this, void 0, void 0, function* () {
         const res = yield getTeamStats(name);
         const tableData = {
             head: ['currentPlayers', 'historicPlayers', 'standinPlayers'],
-            value: []
+            value: [],
         };
         const { currentLineup, historicPlayers, standins } = res;
         const length = Math.max(currentLineup.length, historicPlayers.length, standins.length);
-        Array.from({ length }, (v, i) => i).forEach(n => {
-            let row = [];
+        Array.from({ length }, (v, i) => i).forEach((n) => {
+            const row = [];
             row[0] = currentLineup[n] ? currentLineup[n].name : '';
             row[1] = historicPlayers[n] ? historicPlayers[n].name : '';
             row[2] = standins[n] ? standins[n].name : '';
@@ -80,10 +80,10 @@ const getTeamRanking = () => __awaiter(this, void 0, void 0, function* () {
         const res = yield hltv_1.default.getTeamRanking();
         const tableData = {
             head: ['ranking', 'name', 'points', 'change'],
-            value: []
+            value: [],
         };
-        res.forEach(p => {
-            let row = [p.place, p.team.name, p.points, p.change];
+        res.forEach((p) => {
+            const row = [p.place, p.team.name, p.points, p.change];
             tableData.value.push(row);
         });
         return tableData;
@@ -97,27 +97,30 @@ const getUpcomingMatches = () => __awaiter(this, void 0, void 0, function* () {
         const res = yield hltv_1.default.getMatches();
         const tableData = {
             head: ['stars', 'date', 'team-A', 'team-B', 'format', 'event'],
-            value: []
+            value: [],
         };
-        res.forEach(m => {
+        res.forEach((m) => {
             const container = '★ ★ ★ ★ ★ ★ ★ ★ ★ ★';
-            let star_num = m.stars;
-            let stars = container.slice(0, 2 * star_num);
+            const starNum = m.stars;
+            const stars = container.slice(0, 2 * starNum);
             let date = '-';
             if ('date' in m) {
                 date = m['date'];
-                const _date = new Date(date);
-                date = _date.toLocaleString();
+                const dateT = new Date(date);
+                date = dateT.toLocaleString();
             }
             let team1 = '';
             let team2 = '';
-            if (m.team1)
+            if (m.team1) {
                 team1 = m.team1.name;
-            if (m.team2)
+            }
+            if (m.team2) {
                 team2 = m.team2.name;
+            }
             let event = '';
-            if (m.event)
+            if (m.event) {
                 event = m.event.name;
+            }
             tableData.value.push([stars, date, team1, team2, m.format, event]);
         });
         return tableData;
@@ -131,7 +134,7 @@ const getPlayer = (name) => __awaiter(this, void 0, void 0, function* () {
         const res = yield hltv_1.default.getPlayer({ id: constant_1.PLAYER[name] });
         const tableData = {
             head: ['key', 'value'],
-            value: []
+            value: [],
         };
         const value = tableData.value;
         value.push({ name: res.name });
@@ -149,8 +152,8 @@ const getPlayer = (name) => __awaiter(this, void 0, void 0, function* () {
         value.push({ roundsContributed: res.statistics.roundsContributed });
         value.push({ [' ']: ' ' });
         value.push({ achievements: '' });
-        res.achievements.forEach(a => {
-            let item = {};
+        res.achievements.forEach((a) => {
+            const item = {};
             item[`placed ${a.place} in`] = a.event.name;
             value.push(item);
         });
@@ -166,9 +169,9 @@ const dataToTable = (data) => {
         return;
     }
     const table = new Table({
-        head: data.head
+        head: data.head,
     });
-    data.value.forEach(i => {
+    data.value.forEach((i) => {
         table.push(i);
     });
     util_1.log.default('\n');

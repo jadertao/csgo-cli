@@ -1,20 +1,19 @@
-import HLTV from 'hltv'
 import * as Table from 'cli-table2'
+import HLTV from 'hltv'
 
-import { TEAM, PLAYER, MONTH } from './constant'
+import { MONTH, PLAYER, TEAM } from './constant'
 import { log, printTimeWrap } from './util'
 
-interface tableData {
+interface ITableData {
   head: string[],
   value: any[]
 }
 
 /**
  * used as Promise reject handler
- * TODO: handle errors properly
  * @param err  error
  */
-const handleError = err => {
+const handleError = (err) => {
   log.error('\n')
   log.error(`${err.name} ${err.errno}`)
 }
@@ -34,16 +33,16 @@ const getTeamStats = (name: string) => HLTV.getTeamStats({ id: TEAM[name] })
 /**
  * query recent match according to team name
  * log a table in console
- * @param name team name 
+ * @param name team name
  */
-const getTeamMatches = async (name: string): Promise<tableData> => {
+const getTeamMatches = async (name: string): Promise<ITableData> => {
   try {
     const res = await getTeam(name)
-    const tableData: tableData = {
+    const tableData: ITableData = {
       head: ['opponent', 'result', 'event'],
-      value: []
+      value: [],
     }
-    res.recentResults.forEach(m => {
+    res.recentResults.forEach((m) => {
       tableData.value.push([m.enemyTeam.name, m.result, m.event.name])
     })
     return tableData
@@ -52,22 +51,21 @@ const getTeamMatches = async (name: string): Promise<tableData> => {
   }
 }
 
-
 /**
  * query overview according to team name
  * log a table in console
  * @param name team name
  */
-const getTeamOverview = async (name: string): Promise<tableData> => {
+const getTeamOverview = async (name: string): Promise<ITableData> => {
   try {
     const res = await getTeamStats(name)
-    const tableData: tableData = {
+    const tableData: ITableData = {
       head: ['key', 'value'],
-      value: []
+      value: [],
     }
     const keys = Object.keys(res.overview)
-    keys.forEach(k => {
-      let item = {}
+    keys.forEach((k) => {
+      const item = {}
       item[k] = res.overview[k]
       tableData.value.push(item)
     })
@@ -82,18 +80,18 @@ const getTeamOverview = async (name: string): Promise<tableData> => {
  * log a table in console
  * @param name team name
  */
-const getTeamPlayers = async (name: string): Promise<tableData> => {
+const getTeamPlayers = async (name: string): Promise<ITableData> => {
   try {
     const res = await getTeamStats(name)
-    const tableData: tableData = {
+    const tableData: ITableData = {
       head: ['currentPlayers', 'historicPlayers', 'standinPlayers'],
-      value: []
+      value: [],
     }
     const { currentLineup, historicPlayers, standins } = res
     const length = Math.max(currentLineup.length, historicPlayers.length, standins.length)
 
-    Array.from({ length }, (v, i) => i).forEach(n => {
-      let row = []
+    Array.from({ length }, (v, i) => i).forEach((n) => {
+      const row = []
       row[0] = currentLineup[n] ? currentLineup[n].name : ''
       row[1] = historicPlayers[n] ? historicPlayers[n].name : ''
       row[2] = standins[n] ? standins[n].name : ''
@@ -110,15 +108,15 @@ const getTeamPlayers = async (name: string): Promise<tableData> => {
  * log a table in console
  * TODO: support query historic rankings
  */
-const getTeamRanking = async (): Promise<tableData> => {
+const getTeamRanking = async (): Promise<ITableData> => {
   try {
     const res = await HLTV.getTeamRanking()
-    const tableData: tableData = {
+    const tableData: ITableData = {
       head: ['ranking', 'name', 'points', 'change'],
-      value: []
+      value: [],
     }
-    res.forEach(p => {
-      let row = [p.place, p.team.name, p.points, p.change]
+    res.forEach((p) => {
+      const row = [p.place, p.team.name, p.points, p.change]
       tableData.value.push(row)
     })
     return tableData
@@ -131,32 +129,32 @@ const getTeamRanking = async (): Promise<tableData> => {
  * query all upcoming matches
  * log a table in console
  */
-const getUpcomingMatches = async (): Promise<tableData> => {
+const getUpcomingMatches = async (): Promise<ITableData> => {
   try {
     const res = await HLTV.getMatches()
     const tableData = {
       head: ['stars', 'date', 'team-A', 'team-B', 'format', 'event'],
-      value: []
+      value: [],
     }
-    res.forEach(m => {
+    res.forEach((m) => {
       const container = '★ ★ ★ ★ ★ ★ ★ ★ ★ ★'
-      let star_num: number = m.stars
-      let stars: string = container.slice(0, 2 * star_num)
+      const starNum: number = m.stars
+      const stars: string = container.slice(0, 2 * starNum)
 
       let date: string = '-'
       if ('date' in m) {
         date = m['date']
-        const _date: Date = new Date(date)
-        date = _date.toLocaleString()
+        const dateT: Date = new Date(date)
+        date = dateT.toLocaleString()
       }
 
       let team1: string = ''
       let team2: string = ''
-      if (m.team1) team1 = m.team1.name
-      if (m.team2) team2 = m.team2.name
+      if (m.team1) { team1 = m.team1.name }
+      if (m.team2) { team2 = m.team2.name }
 
       let event: string = ''
-      if (m.event) event = m.event.name
+      if (m.event) {event = m.event.name}
 
       tableData.value.push([stars, date, team1, team2, m.format, event])
     })
@@ -171,12 +169,12 @@ const getUpcomingMatches = async (): Promise<tableData> => {
  * query player info according to name
  * @param name player name
  */
-const getPlayer = async (name: string): Promise<tableData> => {
+const getPlayer = async (name: string): Promise<ITableData> => {
   try {
     const res = await HLTV.getPlayer({ id: PLAYER[name] })
-    const tableData: tableData = {
+    const tableData: ITableData = {
       head: ['key', 'value'],
-      value: []
+      value: [],
     }
     // 这段代码有优化的必要吗？
     const value = tableData.value
@@ -195,8 +193,8 @@ const getPlayer = async (name: string): Promise<tableData> => {
     value.push({ roundsContributed: res.statistics.roundsContributed })
     value.push({ [' ']: ' ' })
     value.push({ achievements: '' })
-    res.achievements.forEach(a => {
-      let item = {}
+    res.achievements.forEach((a) => {
+      const item = {}
       item[`placed ${a.place} in`] = a.event.name
       value.push(item)
     })
@@ -206,15 +204,15 @@ const getPlayer = async (name: string): Promise<tableData> => {
   }
 }
 
-const dataToTable = (data: tableData) => {
+const dataToTable = (data: ITableData) => {
   if (!data) {
     log.error('no valid result')
     return
   }
   const table = new Table({
-    head: data.head
+    head: data.head,
   })
-  data.value.forEach(i => {
+  data.value.forEach((i) => {
     table.push(i)
   })
   log.default('\n')
@@ -223,13 +221,12 @@ const dataToTable = (data: tableData) => {
 
 const logWrap = (fn: any) => async (name?: string) => {
   try {
-    const tableData: tableData = await fn(name)
+    const tableData: ITableData = await fn(name)
     dataToTable(tableData)
   } catch (e) {
     handleError(e)
   }
 }
-
 
 export const printTeamMatches = logWrap(getTeamMatches)
 export const printTeamOverview = logWrap(getTeamOverview)
@@ -237,7 +234,8 @@ export const printTeamRanking = logWrap(getTeamRanking)
 export const printUpcomingMatches = logWrap(getUpcomingMatches)
 export const printPlayer = logWrap(getPlayer)
 export const printTeamPlayers = logWrap(getTeamPlayers)
-//TODO: fix error
+
+// TODO: fix error
 export const printTeamMatchesTime = printTimeWrap(printTeamMatches)
 export const printTeamOverviewTime = printTimeWrap(printTeamOverview)
 export const printTeamRankingTime = printTimeWrap(printTeamRanking)

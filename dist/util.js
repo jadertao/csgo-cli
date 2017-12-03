@@ -13,9 +13,9 @@ const Progress = require("progress");
 const constant_1 = require("./constant");
 exports.log = {
     default: console.log,
-    hint: v => console.log(chalk_1.default.greenBright(v)),
-    warn: v => console.log(chalk_1.default.yellowBright(v)),
-    error: v => console.log(chalk_1.default.redBright(v))
+    hint: (v) => console.log(chalk_1.default.greenBright(v)),
+    warn: (v) => console.log(chalk_1.default.yellowBright(v)),
+    error: (v) => console.log(chalk_1.default.redBright(v)),
 };
 exports.teamCheck = (name) => {
     if (!name) {
@@ -43,7 +43,7 @@ exports.playerCheck = (name) => {
         return false;
     }
 };
-class dynamicHint {
+class DynamicHint {
     constructor(hint) {
         this.forward = () => {
             this.bar.tick(1, { title: this.hint });
@@ -67,7 +67,7 @@ class dynamicHint {
         this.bar = new Progress(':title:bar', {
             complete: '.',
             incomplete: ' ',
-            total: 6
+            total: 6,
         });
         this.terminate = () => {
             clearTimeout(this.timer);
@@ -75,8 +75,8 @@ class dynamicHint {
         };
     }
 }
-exports.dynamicHint = dynamicHint;
-class waitingHint {
+exports.DynamicHint = DynamicHint;
+class WaitingHint {
     constructor(dynamicHint, hint, fn) {
         this.trigger = () => __awaiter(this, void 0, void 0, function* () {
             this.dynamicHint.forward();
@@ -85,11 +85,10 @@ class waitingHint {
         });
         this.dynamicHint = new dynamicHint(hint);
         this.fn = fn;
-        this.trigger();
     }
 }
-exports.waitingHint = waitingHint;
-exports.printTimeWrap = fn => (name) => __awaiter(this, void 0, void 0, function* () {
+exports.WaitingHint = WaitingHint;
+exports.printTimeWrap = (fn) => (name) => __awaiter(this, void 0, void 0, function* () {
     const startTime = (new Date()).getTime();
     yield fn(name);
     const endTime = (new Date()).getTime();
@@ -99,9 +98,9 @@ exports.printTimeWrap = fn => (name) => __awaiter(this, void 0, void 0, function
 exports.pickOption = (config, object) => {
     const res = {
         isSuccess: false,
-        value: ''
+        value: '',
     };
-    const filter = config.filter(v => object[v]);
+    const filter = config.filter((v) => object[v]);
     if (filter.length === 1) {
         res.isSuccess = true;
         res.value = filter.join('');

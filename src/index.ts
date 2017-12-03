@@ -2,19 +2,18 @@
 import * as csgo from 'commander'
 import { config } from './config'
 
+const mount = (cli, cliConfig) => {
+  cli.version(cliConfig.version)
 
-const mount = (cli, config) => {
-  cli.version(config.version)
-
-  config.command.forEach(cmd => {
+  cliConfig.command.forEach((cmd) => {
     // CARE: the return value of cli#command is wired, so take it out
-    let _cli = cli.command(cmd.name)
+    const cliT = cli.command(cmd.name)
 
-    _cli.alias(cmd.alias).description(cmd.description)
+    cliT.alias(cmd.alias).description(cmd.description)
 
-    if (cmd.option.length) cmd.option.forEach(o => _cli.option(o[0], o[1]))
+    if (cmd.option.length) { cmd.option.forEach((o) => cliT.option(o[0], o[1])) }
 
-    _cli.action(cmd.handler)
+    cliT.action(cmd.handler)
   })
 }
 

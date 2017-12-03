@@ -13,32 +13,40 @@ exports.config = {
                 ['-m --match', 'query recent matches'],
                 ['-o --overview', 'query overview'],
                 ['-p --player', 'query players of this team'],
-                ['-r --ranking', 'query current ranking of all team']
+                ['-r --ranking', 'query current ranking of all team'],
             ],
             handler: (name, options) => {
-                if (name)
+                if (name) {
                     name = name.toLowerCase();
-                const config = ['match', 'overview', 'player', 'ranking'];
-                const mountedOption = util_1.pickOption(config, options);
+                }
+                const optionList = ['match', 'overview', 'player', 'ranking'];
+                const mountedOption = util_1.pickOption(optionList, options);
                 const optionEntry = {
-                    match: name => {
-                        if (!util_1.teamCheck(name))
-                            return;
-                        new util_1.waitingHint(util_1.dynamicHint, `querying recent matches of team ${name}`, query_1.printTeamMatchesTime.bind(null, name));
+                    match: (teamName) => {
+                        if (!util_1.teamCheck(name)) {
+                            return false;
+                        }
+                        const worker = new util_1.WaitingHint(util_1.DynamicHint, `querying recent matches of team ${teamName}`, query_1.printTeamMatchesTime.bind(null, teamName));
+                        worker.trigger();
                     },
-                    overview: name => {
-                        if (!util_1.teamCheck(name))
-                            return;
-                        new util_1.waitingHint(util_1.dynamicHint, `querying team overview of team ${name}`, query_1.printTeamOverviewTime.bind(null, name));
+                    overview: (teamName) => {
+                        if (!util_1.teamCheck(teamName)) {
+                            return false;
+                        }
+                        const worker = new util_1.WaitingHint(util_1.DynamicHint, `querying team overview of team ${teamName}`, query_1.printTeamOverviewTime.bind(null, teamName));
+                        worker.trigger();
                     },
-                    player: name => {
-                        if (!util_1.teamCheck(name))
-                            return;
-                        new util_1.waitingHint(util_1.dynamicHint, `querying players of team ${name}`, query_1.printTeamPlayersTime.bind(null, name));
+                    player: (teamName) => {
+                        if (!util_1.teamCheck(teamName)) {
+                            return false;
+                        }
+                        const worker = new util_1.WaitingHint(util_1.DynamicHint, `querying players of team ${teamName}`, query_1.printTeamPlayersTime.bind(null, teamName));
+                        worker.trigger();
                     },
-                    ranking: name => {
-                        new util_1.waitingHint(util_1.dynamicHint, `querying current team ranking of all team`, query_1.printTeamRankingTime);
-                    }
+                    ranking: () => {
+                        const workder = new util_1.WaitingHint(util_1.DynamicHint, `querying current team ranking of all team`, query_1.printTeamRankingTime);
+                        workder.trigger();
+                    },
                 };
                 if (mountedOption.isSuccess) {
                     optionEntry[mountedOption.value](name);
@@ -46,7 +54,7 @@ exports.config = {
                 else {
                     util_1.log.warn("a valid option is required, see 'csgo team -h'");
                 }
-            }
+            },
         },
         {
             name: 'match',
@@ -54,19 +62,22 @@ exports.config = {
             description: 'query the time table of upcoming matches',
             option: [],
             handler: () => {
-                new util_1.waitingHint(util_1.dynamicHint, 'querying the time table of upcoming matches', query_1.printUpcomingMatchesTime);
-            }
+                const worker = new util_1.WaitingHint(util_1.DynamicHint, 'querying the time table of upcoming matches', query_1.printUpcomingMatchesTime);
+                worker.trigger();
+            },
         },
         {
             name: 'player',
             alias: 'p',
             description: 'query player info',
             option: [],
-            handler: name => {
-                if (!util_1.playerCheck(name))
-                    return;
-                new util_1.waitingHint(util_1.dynamicHint, `querying info of ${name}`, query_1.printPlayerTime.bind(null, name));
-            }
-        }
-    ]
+            handler: (playerName) => {
+                if (!util_1.playerCheck(playerName)) {
+                    return false;
+                }
+                const worker = new util_1.WaitingHint(util_1.DynamicHint, `querying info of ${name}`, query_1.printPlayerTime.bind(null, name));
+                worker.trigger();
+            },
+        },
+    ],
 };

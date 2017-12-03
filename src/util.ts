@@ -1,13 +1,12 @@
 import chalk from 'chalk'
 import * as Progress from 'progress'
-import { TEAM, PLAYER } from './constant'
-
+import { PLAYER, TEAM } from './constant'
 
 export const log = {
   default: console.log,
-  hint: v => console.log(chalk.greenBright(v)),
-  warn: v => console.log(chalk.yellowBright(v)),
-  error: v => console.log(chalk.redBright(v))
+  hint: (v) => console.log(chalk.greenBright(v)),
+  warn: (v) => console.log(chalk.yellowBright(v)),
+  error: (v) => console.log(chalk.redBright(v)),
 }
 
 export const teamCheck = (name?: string) => {
@@ -35,16 +34,19 @@ export const playerCheck = (name?: string) => {
   }
 }
 
-export class dynamicHint {
+export class DynamicHint {
+  public bar
+  public terminate
+
   private timer
   private hint
-  public bar
+
   constructor(hint) {
     this.hint = hint
     this.bar = new Progress(':title:bar', {
       complete: '.',
       incomplete: ' ',
-      total: 6
+      total: 6,
     })
     this.terminate = () => {
       clearTimeout(this.timer)
@@ -69,18 +71,15 @@ export class dynamicHint {
       this.timer = setTimeout(this.backward, 500)
     }
   }
-
-  public terminate
 }
 
-export class waitingHint {
+export class WaitingHint {
   private dynamicHint
   private hint
   private fn
   constructor(dynamicHint, hint: string, fn) {
     this.dynamicHint = new dynamicHint(hint)
     this.fn = fn
-    this.trigger()
   }
   public trigger = async () => {
     this.dynamicHint.forward()
@@ -89,7 +88,7 @@ export class waitingHint {
   }
 }
 
-export const printTimeWrap = fn => async (name?: any) => {
+export const printTimeWrap = (fn) => async (name?: any) => {
   const startTime = (new Date()).getTime()
   await fn(name)
   const endTime = (new Date()).getTime()
@@ -97,13 +96,12 @@ export const printTimeWrap = fn => async (name?: any) => {
   log.hint(`takes ${duringSecond} second`)
 }
 
-
 export const pickOption = (config: string[], object) => {
   const res = {
     isSuccess: false,
-    value: ''
+    value: '',
   }
-  const filter = config.filter(v => object[v])
+  const filter = config.filter((v) => object[v])
   if (filter.length === 1) {
     res.isSuccess = true
     res.value = filter.join('')
