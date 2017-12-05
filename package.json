@@ -1,7 +1,7 @@
 {
   "name": "csgo-cli",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "cli query tools for csgo",
   "main": "index.js",
   "scripts": {
     "build": "tsc"
@@ -9,8 +9,8 @@
   "bin": {
     "csgo": "dist/index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jader Tao",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^2.3.0",
     "cli-table2": "^0.2.0",
