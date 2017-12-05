@@ -21,6 +21,7 @@ export const teamCheck = (name?: string) => {
     return false
   }
 }
+
 export const playerCheck = (name?: string) => {
   if (!name) {
     log.warn('player name is required')
@@ -88,6 +89,10 @@ export class WaitingHint {
   }
 }
 
+/**
+ * print the executing time of the function
+ * @param fn
+ */
 export const printTimeWrap = (fn) => async (name?: any) => {
   const startTime = (new Date()).getTime()
   await fn(name)

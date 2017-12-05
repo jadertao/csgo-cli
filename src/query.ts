@@ -32,7 +32,7 @@ const getTeamStats = (name: string) => HLTV.getTeamStats({ id: TEAM[name] })
 
 /**
  * query recent match according to team name
- * log a table in console
+ * async function return a data source for cli-table
  * @param name team name
  */
 const getTeamMatches = async (name: string): Promise<ITableData> => {
@@ -53,8 +53,8 @@ const getTeamMatches = async (name: string): Promise<ITableData> => {
 
 /**
  * query overview according to team name
- * log a table in console
- * @param name team name
+ * async function return a data source for cli-table
+ * @param name ,team name
  */
 const getTeamOverview = async (name: string): Promise<ITableData> => {
   try {
@@ -77,8 +77,8 @@ const getTeamOverview = async (name: string): Promise<ITableData> => {
 
 /**
  * query players according to team name
- * log a table in console
- * @param name team name
+ * async function return a data source for cli-table
+ * @param name ,team name
  */
 const getTeamPlayers = async (name: string): Promise<ITableData> => {
   try {
@@ -104,8 +104,8 @@ const getTeamPlayers = async (name: string): Promise<ITableData> => {
 }
 
 /**
- * query all team rankings for now
- * log a table in console
+ * query current all teams ranking
+ * async function return a data source for cli-table
  * TODO: support query historic rankings
  */
 const getTeamRanking = async (): Promise<ITableData> => {
@@ -126,8 +126,8 @@ const getTeamRanking = async (): Promise<ITableData> => {
 }
 
 /**
- * query all upcoming matches
- * log a table in console
+ * query the time table of upcoming matches
+ * async function return a data source for cli-table
  */
 const getUpcomingMatches = async (): Promise<ITableData> => {
   try {
@@ -166,8 +166,8 @@ const getUpcomingMatches = async (): Promise<ITableData> => {
 }
 
 /**
- * query player info according to name
- * @param name player name
+ * async function return a data source for cli-table
+ * @param name ,player name
  */
 const getPlayer = async (name: string): Promise<ITableData> => {
   try {
@@ -204,6 +204,10 @@ const getPlayer = async (name: string): Promise<ITableData> => {
   }
 }
 
+/**
+ * log some info
+ * @param data ,data source from the async functions above
+ */
 const dataToTable = (data: ITableData) => {
   if (!data) {
     log.error('no valid result')
@@ -219,6 +223,10 @@ const dataToTable = (data: ITableData) => {
   log.default(table.toString())
 }
 
+/**
+ * high-order function, add log service for a function
+ * @param fn , the origin function to wrap
+ */
 const logWrap = (fn: any) => async (name?: string) => {
   try {
     const tableData: ITableData = await fn(name)
@@ -235,7 +243,6 @@ export const printUpcomingMatches = logWrap(getUpcomingMatches)
 export const printPlayer = logWrap(getPlayer)
 export const printTeamPlayers = logWrap(getTeamPlayers)
 
-// TODO: fix error
 export const printTeamMatchesTime = printTimeWrap(printTeamMatches)
 export const printTeamOverviewTime = printTimeWrap(printTeamOverview)
 export const printTeamRankingTime = printTimeWrap(printTeamRanking)
