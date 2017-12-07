@@ -2,15 +2,33 @@
   "name": "csgo-cli",
   "version": "0.1.0",
   "description": "cli query tools for csgo",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "start": "tsc --watch",
     "build": "tsc"
   },
   "bin": {
     "csgo": "dist/index.js"
   },
-  "author": "Jader Tao",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:JadeTao/csgo-cli.git"
+  },
+  "author": "JadeTao",
   "license": "MIT",
+  "bugs":{
+    "url": "https://github.com/JadeTao/csgo-cli/issues"
+  },
+  "engines": {
+    "node":">=6.0.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/"
+  ],
+  "homepage": "https://github.com/JadeTao/csgo-cli",
   "dependencies": {
     "chalk": "^2.3.0",
     "cli-table2": "^0.2.0",
