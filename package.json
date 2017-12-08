@@ -16,6 +16,9 @@
     "url": "git+git@github.com:JadeTao/csgo-cli.git"
   },
   "author": "JadeTao",
+  "keywords": [
+    "csgo","cli"
+  ],
   "license": "MIT",
   "bugs":{
     "url": "https://github.com/JadeTao/csgo-cli/issues"
