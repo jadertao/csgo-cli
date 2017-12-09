@@ -100,8 +100,8 @@ export const config: IConfig = {
         if (!playerCheck(playerName)) { return false }
         const worker = new WaitingHint(
           DynamicHint,
-          `querying info of ${name}`,
-          printPlayerTime.bind(null, name))
+          `querying info of ${playerName}`,
+          printPlayerTime.bind(null, playerName))
         worker.trigger()
       },
     },
