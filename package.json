@@ -1,6 +1,6 @@
 {
   "name": "csgo-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "cli query tools for csgo",
   "main": "dist/index.js",
   "scripts": {
@@ -17,14 +17,15 @@
   },
   "author": "JadeTao",
   "keywords": [
-    "csgo","cli"
+    "csgo",
+    "cli"
   ],
   "license": "MIT",
-  "bugs":{
+  "bugs": {
     "url": "https://github.com/JadeTao/csgo-cli/issues"
   },
   "engines": {
-    "node":">=6.0.0"
+    "node": ">=6.0.0"
   },
   "files": [
     "LICENSE",
