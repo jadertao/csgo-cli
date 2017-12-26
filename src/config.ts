@@ -22,7 +22,7 @@ interface IConfig {
 }
 
 export const config: IConfig = {
-  version: '0.1.0',
+  version: '0.1.2',
   command: [
     {
       name: 'team [name]',
