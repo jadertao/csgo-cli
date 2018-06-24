@@ -1,4 +1,4 @@
-import * as Table from 'cli-table2'
+import * as Table from 'cli-table3'
 import HLTV from 'hltv'
 
 import { MONTH, PLAYER, TEAM } from './constant'
