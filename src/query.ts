@@ -154,7 +154,7 @@ const getUpcomingMatches = async (): Promise<ITableData> => {
       if (m.team2) { team2 = m.team2.name }
 
       let event: string = ''
-      if (m.event) {event = m.event.name}
+      if (m.event) { event = m.event.name }
 
       tableData.value.push([stars, date, team1, team2, m.format, event])
     })
@@ -213,12 +213,8 @@ const dataToTable = (data: ITableData) => {
     log.error('no valid result')
     return
   }
-  const table = new Table({
-    head: data.head,
-  })
-  data.value.forEach((i) => {
-    table.push(i)
-  })
+
+  const table = data.value.reduce((result, current) => ((result.push(current), result)), new Table({ head: data.head }))
   log.default('\n')
   log.default(table.toString())
 }
