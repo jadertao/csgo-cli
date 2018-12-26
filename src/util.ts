@@ -4,9 +4,9 @@ import { PLAYER, TEAM } from './constant'
 
 export const log = {
   default: console.log,
-  hint: (v) => console.log(chalk.greenBright(v)),
-  warn: (v) => console.log(chalk.yellowBright(v)),
-  error: (v) => console.log(chalk.redBright(v)),
+  hint: (v: any) => console.log(chalk.greenBright(v)),
+  warn: (v: any) => console.log(chalk.yellowBright(v)),
+  error: (v: any) => console.log(chalk.redBright(v)),
 }
 
 export const teamCheck = (name?: string) => {
@@ -36,13 +36,13 @@ export const playerCheck = (name?: string) => {
 }
 
 export class DynamicHint {
-  public bar
-  public terminate
+  public bar: Progress
+  public terminate: () => void
 
-  private timer
-  private hint
+  private timer: NodeJS.Timer
+  private hint: string
 
-  constructor(hint) {
+  constructor(hint: string) {
     this.hint = hint
     this.bar = new Progress(':title:bar', {
       complete: '.',
@@ -58,27 +58,26 @@ export class DynamicHint {
   public forward = () => {
     this.bar.tick(1, { title: this.hint })
     if (this.bar.curr > 4) {
-      this.backward()
+      this.timer = setTimeout(this.backward, 700)
     } else {
-      this.timer = setTimeout(this.forward, 500)
+      this.timer = setTimeout(this.forward, 700)
     }
   }
 
   public backward = () => {
     this.bar.tick(-1, { title: this.hint })
     if (this.bar.curr === 0) {
-      this.forward()
+      this.timer = setTimeout(this.forward, 700)
     } else {
-      this.timer = setTimeout(this.backward, 500)
+      this.timer = setTimeout(this.backward, 700)
     }
   }
 }
 
 export class WaitingHint {
-  private dynamicHint
-  private hint
-  private fn
-  constructor(dynamicHint, hint: string, fn) {
+
+  private dynamicHint: DynamicHint
+  constructor(dynamicHint: typeof DynamicHint, hint: string, private fn: () => void) {
     this.dynamicHint = new dynamicHint(hint)
     this.fn = fn
   }
@@ -93,7 +92,7 @@ export class WaitingHint {
  * print the executing time of the function
  * @param fn
  */
-export const printTimeWrap = (fn) => async (name?: any) => {
+export const printTimeWrap = (fn: (...args: any) => void) => async (name?: any) => {
   const startTime = (new Date()).getTime()
   await fn(name)
   const endTime = (new Date()).getTime()
@@ -101,7 +100,7 @@ export const printTimeWrap = (fn) => async (name?: any) => {
   log.hint(`takes ${duringSecond} second`)
 }
 
-export const pickOption = (config: string[], object) => {
+export const pickOption = (config: string[], object: any) => {
   const res = {
     isSuccess: false,
     value: '',
