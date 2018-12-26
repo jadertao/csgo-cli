@@ -5,15 +5,20 @@ import { MONTH, PLAYER, TEAM } from './constant'
 import { log, printTimeWrap } from './util'
 
 interface ITableData {
-  head: string[],
-  value: any[]
+  head: string[];
+  value: any[];
+}
+
+interface IError {
+  name: string;
+  errno: string;
 }
 
 /**
  * used as Promise reject handler
  * @param err  error
  */
-const handleError = (err) => {
+const handleError = (err: IError) => {
   log.error('\n')
   log.error(`${err.name} ${err.errno}`)
 }
@@ -143,7 +148,7 @@ const getUpcomingMatches = async (): Promise<ITableData> => {
 
       let date: string = '-'
       if ('date' in m) {
-        date = m['date']
+        (date as any) = m['date']
         const dateT: Date = new Date(date)
         date = dateT.toLocaleString()
       }

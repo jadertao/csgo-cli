@@ -9,16 +9,16 @@ import {
 import { DynamicHint, log, pickOption, playerCheck, teamCheck, WaitingHint } from './util'
 
 interface ICommand {
-  name: string,
-  alias: string,
-  description: string,
-  option: string[][],
-  handler: any
+  name: string;
+  alias: string;
+  description: string;
+  option: string[][];
+  handler: any;
 }
 
 interface IConfig {
-  version: string,
-  command: ICommand[]
+  version: string;
+  command: ICommand[];
 }
 
 export const config: IConfig = {
@@ -39,7 +39,7 @@ export const config: IConfig = {
         const optionList = ['match', 'overview', 'player', 'ranking']
         const mountedOption = pickOption(optionList, options)
         const optionEntry = {
-          match: (teamName) => {
+          match: (teamName: string) => {
             if (!teamCheck(name)) { return false }
             const worker = new WaitingHint(
               DynamicHint,
@@ -47,7 +47,7 @@ export const config: IConfig = {
               printTeamMatchesTime.bind(null, teamName))
             worker.trigger()
           },
-          overview: (teamName) => {
+          overview: (teamName: string) => {
             if (!teamCheck(teamName)) { return false }
             const worker = new WaitingHint(
               DynamicHint,
@@ -55,7 +55,7 @@ export const config: IConfig = {
               printTeamOverviewTime.bind(null, teamName))
             worker.trigger()
           },
-          player: (teamName) => {
+          player: (teamName: string) => {
             if (!teamCheck(teamName)) { return false }
             const worker = new WaitingHint(
               DynamicHint,
@@ -96,7 +96,7 @@ export const config: IConfig = {
       alias: 'p',
       description: 'query player info',
       option: [],
-      handler: (playerName) => {
+      handler: (playerName: string) => {
         if (!playerCheck(playerName)) { return false }
         const worker = new WaitingHint(
           DynamicHint,
