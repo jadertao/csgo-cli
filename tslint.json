@@ -23,7 +23,7 @@
             false
         ],
         "max-classes-per-file": [
-            false
+            false, 10
         ]
     },
     "rulesDirectory": []
