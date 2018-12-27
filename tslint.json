@@ -24,7 +24,8 @@
         ],
         "max-classes-per-file": [
             false, 10
-        ]
+        ],
+        "object-literal-key-quotes": false,
     },
     "rulesDirectory": []
 }
