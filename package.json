@@ -1,6 +1,6 @@
 {
   "name": "csgo-cli",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "cli query tools for csgo",
   "main": "dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc"
   },
   "bin": {
-    "csgo-test": "dist/index.js"
+    "csgo": "dist/index.js"
   },
   "preferGlobal": true,
   "repository": {
