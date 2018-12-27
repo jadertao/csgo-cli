@@ -8,6 +8,8 @@ import {
 } from './query'
 import { DynamicHint, log, pickOption, playerCheck, teamCheck, WaitingHint } from './util'
 
+const pkg = require('../package.json')
+
 interface ICommand {
   name: string;
   alias: string;
@@ -22,7 +24,7 @@ interface IConfig {
 }
 
 export const config: IConfig = {
-  version: '0.1.3',
+  version: pkg.version,
   command: [
     {
       name: 'team [name]',
