@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/commander": "^2.11.0",
-    "@types/node": "^8.0.52",
+    "@types/node": "^8.10.39",
     "@types/progress": "^2.0.3",
     "tslint": "^5.11.0",
     "typescript": "^3.1.6"
