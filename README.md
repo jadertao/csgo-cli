@@ -1,7 +1,7 @@
 
 # CSGO-Cli &middot; [![Build Status](https://travis-ci.org/JadeTao/csgo-cli.svg?branch=master)](https://travis-ci.org/JadeTao/csgo-cli) <a target="_blank" href="https://opensource.org/licenses/MIT" title="License: MIT"><img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"></a>
 
-get CSGO professional infomation easily via cli, match, team and player.
+🔫get CSGO professional information easily via cli, including match, team and player.
 
 ## Install
 
@@ -28,7 +28,7 @@ get the infomation of one command
 ### version
 
 ```shell
-$ csgo -v
+$ csgo -V
 $ csgo --version
 
 get the overview of this cli
