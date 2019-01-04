@@ -77,7 +77,7 @@ export class DynamicHint {
 export class WaitingHint {
 
   private dynamicHint: DynamicHint
-  constructor(dynamicHint: typeof DynamicHint, hint: string, private fn: () => void) {
+  constructor(hint: string, private fn: () => void, dynamicHint: typeof DynamicHint = DynamicHint) {
     this.dynamicHint = new dynamicHint(hint)
     this.fn = fn
   }

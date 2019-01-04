@@ -6,9 +6,8 @@ import {
   printTeamRankingTime,
   printUpcomingMatchesTime,
 } from './query'
-import { DynamicHint, log, pickOption, playerCheck, teamCheck, WaitingHint } from './util'
-
-const pkg = require('../package.json')
+import { log, pickOption, playerCheck, teamCheck, WaitingHint } from './util'
+import * as pkg from '../package-lock.json'
 
 interface ICommand {
   name: string;
@@ -44,7 +43,6 @@ export const config: IConfig = {
           match: (teamName: string) => {
             if (!teamCheck(name)) { return false }
             const worker = new WaitingHint(
-              DynamicHint,
               `querying recent matches of team ${teamName}`,
               printTeamMatchesTime.bind(null, teamName))
             worker.trigger()
@@ -52,7 +50,6 @@ export const config: IConfig = {
           overview: (teamName: string) => {
             if (!teamCheck(teamName)) { return false }
             const worker = new WaitingHint(
-              DynamicHint,
               `querying team overview of team ${teamName}`,
               printTeamOverviewTime.bind(null, teamName))
             worker.trigger()
@@ -60,14 +57,12 @@ export const config: IConfig = {
           player: (teamName: string) => {
             if (!teamCheck(teamName)) { return false }
             const worker = new WaitingHint(
-              DynamicHint,
               `querying players of team ${teamName}`,
               printTeamPlayersTime.bind(null, teamName))
             worker.trigger()
           },
           ranking: () => {
             const workder = new WaitingHint(
-              DynamicHint,
               `querying current team ranking of all team`,
               printTeamRankingTime)
             workder.trigger()
@@ -87,7 +82,6 @@ export const config: IConfig = {
       option: [],
       handler: () => {
         const worker = new WaitingHint(
-          DynamicHint,
           'querying the time table of upcoming matches',
           printUpcomingMatchesTime)
         worker.trigger()
@@ -101,7 +95,6 @@ export const config: IConfig = {
       handler: (playerName: string) => {
         if (!playerCheck(playerName)) { return false }
         const worker = new WaitingHint(
-          DynamicHint,
           `querying info of ${playerName}`,
           printPlayerTime.bind(null, playerName))
         worker.trigger()
